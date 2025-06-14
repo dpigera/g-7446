@@ -3,8 +3,13 @@ import React from 'react';
 import AnimatedBackground from './AnimatedBackground';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -23,6 +28,14 @@ const Hero = () => {
       y: 0,
       opacity: 1,
       transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
+    }
+  };
+
+  const handleTryMe = () => {
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      navigate('/auth');
     }
   };
 
@@ -70,10 +83,13 @@ const Hero = () => {
             variants={itemVariants}
             className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16"
           >
-            <a href="#auth" className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold py-4 px-8 rounded-xl transition-all hover:shadow-xl hover:shadow-yellow-500/25 hover:scale-[1.02] active:scale-[0.98] flex items-center group font-inter text-lg">
-              Try Me
+            <button 
+              onClick={handleTryMe}
+              className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold py-4 px-8 rounded-xl transition-all hover:shadow-xl hover:shadow-yellow-500/25 hover:scale-[1.02] active:scale-[0.98] flex items-center group font-inter text-lg"
+            >
+              {user ? 'Go to Dashboard' : 'Try Me'}
               <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
-            </a>
+            </button>
             <a href="#how-it-works" className="border border-gray-600 bg-gray-800/50 backdrop-blur-sm text-white font-medium py-4 px-8 rounded-xl transition-all hover:bg-gray-700/50 hover:scale-[1.02] active:scale-[0.98] font-inter text-lg">
               See How It Works
             </a>

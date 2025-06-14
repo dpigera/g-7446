@@ -2,10 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +19,20 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleAuthAction = () => {
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      navigate('/auth');
+    }
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleSignOut = () => {
+    signOut();
+    setIsMobileMenuOpen(false);
+  };
   
   return (
     <nav 
@@ -48,9 +66,33 @@ const Navbar = () => {
           <a href="#track-engagement" className="text-gray-300 hover:text-white font-medium transition-colors">
             Analytics
           </a>
-          <a href="#auth" className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition-all">
-            Get Started
-          </a>
+          
+          {user ? (
+            <div className="flex items-center space-x-4">
+              <span className="text-gray-300 text-sm">
+                {user.user_metadata?.full_name || user.email}
+              </span>
+              <button 
+                onClick={handleAuthAction}
+                className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition-all"
+              >
+                Dashboard
+              </button>
+              <button 
+                onClick={handleSignOut}
+                className="text-gray-300 hover:text-white font-medium transition-colors"
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <button 
+              onClick={handleAuthAction}
+              className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition-all"
+            >
+              Get Started
+            </button>
+          )}
         </div>
         
         {/* Mobile Menu Button */}
@@ -94,13 +136,33 @@ const Navbar = () => {
             >
               Analytics
             </a>
-            <a 
-              href="#auth" 
-              className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold py-3 px-4 rounded-lg transition-all text-center"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Get Started
-            </a>
+            
+            {user ? (
+              <>
+                <span className="text-gray-300 text-sm border-t border-gray-700 pt-4">
+                  {user.user_metadata?.full_name || user.email}
+                </span>
+                <button 
+                  onClick={handleAuthAction}
+                  className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold py-3 px-4 rounded-lg transition-all text-center"
+                >
+                  Dashboard
+                </button>
+                <button 
+                  onClick={handleSignOut}
+                  className="text-gray-300 hover:text-white font-medium transition-colors text-left"
+                >
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <button 
+                onClick={handleAuthAction}
+                className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-semibold py-3 px-4 rounded-lg transition-all text-center"
+              >
+                Get Started
+              </button>
+            )}
           </div>
         </div>
       )}
