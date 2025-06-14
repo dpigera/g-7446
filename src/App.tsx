@@ -11,6 +11,7 @@ import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import CreateProject from "./pages/CreateProject";
 import UploadUsers from "./pages/UploadUsers";
+import CreateContent from "./pages/CreateContent";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +47,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <UploadUsers />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/create-project/create-content/:projectId" 
+              element={
+                <ProtectedRoute>
+                  <CreateContent />
                 </ProtectedRoute>
               } 
             />

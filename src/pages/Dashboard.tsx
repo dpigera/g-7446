@@ -34,10 +34,28 @@ const Dashboard = () => {
     navigate('/create-project');
   };
 
-  const handleProjectClick = (projectId: string) => {
-    // For now, navigate to upload users step as that's the current flow
-    // Later this can be enhanced to track the last step the user was on
-    navigate(`/create-project/upload-users/${projectId}`);
+  const handleProjectClick = async (projectId: string) => {
+    // Check if this project has any users uploaded
+    const { data: projectUsers, error } = await supabase
+      .from('project_users')
+      .select('id')
+      .eq('project_id', projectId)
+      .limit(1);
+
+    if (error) {
+      console.error('Error checking project users:', error);
+      // Fallback to upload users step if there's an error
+      navigate(`/create-project/upload-users/${projectId}`);
+      return;
+    }
+
+    // If project has users, go to Step 3 (Create Content)
+    // If no users, go to Step 2 (Upload Users)
+    if (projectUsers && projectUsers.length > 0) {
+      navigate(`/create-project/create-content/${projectId}`);
+    } else {
+      navigate(`/create-project/upload-users/${projectId}`);
+    }
   };
 
   return (
