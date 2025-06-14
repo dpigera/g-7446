@@ -10,6 +10,7 @@ interface SlidePreviewModalProps {
   userName: string;
   captions: string[];
   theme: string;
+  projectName?: string;
 }
 
 const getThemeColors = (theme: string) => {
@@ -53,7 +54,7 @@ const getThemeColors = (theme: string) => {
   }
 };
 
-const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: SlidePreviewModalProps) => {
+const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme, projectName = 'PROJECT' }: SlidePreviewModalProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [dynamicBackgroundColor, setDynamicBackgroundColor] = useState('');
   const [dynamicTextColor, setDynamicTextColor] = useState('');
@@ -237,7 +238,7 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
               
               <div className="relative w-full h-full flex flex-col justify-center items-center text-center p-8 z-10">
                 {currentSlide === 0 ? (
-                  // Title slide with enhanced dramatic styling - entrance animation only
+                  // Title slide with updated text and sizing to match template previews
                   <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -247,38 +248,38 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                       initial={{ scale: 0.5, rotateY: -180 }}
                       animate={{ scale: 1, rotateY: 0 }}
                       transition={{ delay: 0.3, duration: 0.8, type: "spring" }}
-                      className="text-4xl font-black uppercase tracking-wider mb-6"
+                      className="text-lg font-black uppercase tracking-wider mb-6"
                       style={{ 
                         color: dynamicTextColor || themeColors.textColor,
                         textShadow: '0 0 30px rgba(255,255,255,0.5)'
                       }}
                     >
-                      {userName.split(' ')[0]}'S 2024
+                      2025
                     </motion.div>
                     <motion.div
                       initial={{ scale: 0.3, opacity: 0 }}
                       animate={{ scale: 1.2, opacity: 1 }}
                       transition={{ delay: 0.6, duration: 1.2, type: "tween" }}
-                      className="text-8xl font-black uppercase mb-6"
+                      className="text-3xl font-black uppercase mb-6"
                       style={{ 
                         color: themeColors.accentColor,
                         textShadow: '0 0 40px rgba(255,255,255,0.7), 0 0 80px rgba(255,255,255,0.3)',
                         filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.5))'
                       }}
                     >
-                      WRAPPED
+                      {projectName.toUpperCase()}
                     </motion.div>
                     <motion.div
                       initial={{ y: 30, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 1, duration: 0.6 }}
-                      className="text-3xl font-bold uppercase mt-4"
+                      className="text-base font-bold uppercase mt-4"
                       style={{ 
                         color: dynamicTextColor || themeColors.textColor,
                         textShadow: '0 0 20px rgba(255,255,255,0.4)'
                       }}
                     >
-                      EXPERIENCE
+                      SLIDES
                     </motion.div>
                   </motion.div>
                 ) : (

@@ -441,6 +441,7 @@ const ChooseTheme = () => {
           userName={`${selectedUser.first_name} ${selectedUser.last_name}`}
           captions={selectedUser.wrap_captions || []}
           theme={selectedTheme}
+          projectName={projectName}
         />
       )}
     </div>
