@@ -1,14 +1,22 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import { ArrowLeft } from 'lucide-react';
 
 const CreateContent = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
+  const [creativePrompt, setCreativePrompt] = useState(`For each user, send the following to GPT-4:
+- The system prompt describing the app's goal (turn data into a personalized Wrapped experience)
+- The admin's creative prompt
+- The user's name, image URL, and \`data\` JSON
+
+Ask GPT-4 to return 5–6 slide captions (1 sentence each, playful tone, emojis allowed). Save the output as \`wrap_captions\` in the user record`);
 
   if (!projectId) {
     return (
@@ -17,6 +25,11 @@ const CreateContent = () => {
       </div>
     );
   }
+
+  const handleGenerateContent = () => {
+    console.log('Generating wrapped content with prompt:', creativePrompt);
+    // TODO: Implement content generation logic
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
@@ -81,15 +94,27 @@ const CreateContent = () => {
                 Project ID: {projectId}
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="text-center py-8">
-                <p className="text-gray-300 text-lg">
-                  Content creation step coming soon...
-                </p>
-                <p className="text-gray-400 text-sm mt-2">
-                  This is where you'll be able to create your wrapped content.
-                </p>
+            <CardContent className="space-y-6">
+              <div>
+                <Label htmlFor="creative-prompt" className="text-white text-lg font-medium mb-3 block">
+                  Creative Prompt
+                </Label>
+                <Textarea
+                  id="creative-prompt"
+                  value={creativePrompt}
+                  onChange={(e) => setCreativePrompt(e.target.value)}
+                  className="min-h-[200px] bg-white/5 border-white/20 text-white placeholder-gray-400 resize-none"
+                  placeholder="Enter your creative prompt here..."
+                />
               </div>
+              
+              <Button 
+                onClick={handleGenerateContent}
+                className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold py-3"
+                size="lg"
+              >
+                Generate wrapped content
+              </Button>
             </CardContent>
           </Card>
         </motion.div>
