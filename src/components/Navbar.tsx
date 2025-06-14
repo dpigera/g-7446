@@ -21,43 +21,41 @@ const Navbar = () => {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 px-6",
         isScrolled 
-          ? "bg-white/80 backdrop-blur-lg shadow-sm" 
+          ? "bg-gray-900/90 backdrop-blur-lg shadow-sm" 
           : "bg-transparent"
       )}
     >
       <div className="container max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center">
           <a href="/" className="flex items-center">
-            <img 
-              src="/lovable-uploads/ce207080-f6c2-430d-9621-79d32ab08655.png" 
-              alt="Convrt.ai Logo" 
-              className="h-8 md:h-10"
-            />
+            <div className="text-2xl font-bold text-white">
+              Wrapped<span className="text-purple-400">.ai</span>
+            </div>
           </a>
         </div>
         
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
-          <a href="#how-it-works" className="text-convrt-dark-blue/80 hover:text-convrt-dark-blue font-medium transition-colors">
+          <a href="#how-it-works" className="text-gray-300 hover:text-white font-medium transition-colors">
             How It Works
           </a>
-          <a href="#testimonials" className="text-convrt-dark-blue/80 hover:text-convrt-dark-blue font-medium transition-colors">
-            Case Studies
+          <a href="#examples" className="text-gray-300 hover:text-white font-medium transition-colors">
+            Examples
           </a>
-          <a href="#product" className="text-convrt-dark-blue/80 hover:text-convrt-dark-blue font-medium transition-colors">
-            Product
+          <a href="#powered-by-ai" className="text-gray-300 hover:text-white font-medium transition-colors">
+            AI Features
           </a>
-          <a href="#pricing" className="text-convrt-dark-blue/80 hover:text-convrt-dark-blue font-medium transition-colors">
-            Pricing
+          <a href="#track-engagement" className="text-gray-300 hover:text-white font-medium transition-colors">
+            Analytics
           </a>
-          <a href="#cta" className="button-primary">
+          <a href="#auth" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition-all">
             Get Started
           </a>
         </div>
         
         {/* Mobile Menu Button */}
         <button 
-          className="md:hidden text-convrt-dark-blue" 
+          className="md:hidden text-white" 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -66,39 +64,39 @@ const Navbar = () => {
       
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4 px-6">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-gray-900/95 backdrop-blur-lg shadow-lg py-4 px-6">
           <div className="flex flex-col space-y-4">
             <a 
               href="#how-it-works" 
-              className="text-convrt-dark-blue/80 hover:text-convrt-dark-blue font-medium transition-colors"
+              className="text-gray-300 hover:text-white font-medium transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               How It Works
             </a>
             <a 
-              href="#testimonials" 
-              className="text-convrt-dark-blue/80 hover:text-convrt-dark-blue font-medium transition-colors"
+              href="#examples" 
+              className="text-gray-300 hover:text-white font-medium transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Case Studies
+              Examples
             </a>
             <a 
-              href="#product" 
-              className="text-convrt-dark-blue/80 hover:text-convrt-dark-blue font-medium transition-colors"
+              href="#powered-by-ai" 
+              className="text-gray-300 hover:text-white font-medium transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Product
+              AI Features
             </a>
             <a 
-              href="#pricing" 
-              className="text-convrt-dark-blue/80 hover:text-convrt-dark-blue font-medium transition-colors"
+              href="#track-engagement" 
+              className="text-gray-300 hover:text-white font-medium transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Pricing
+              Analytics
             </a>
             <a 
-              href="#cta" 
-              className="button-primary w-full text-center"
+              href="#auth" 
+              className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-3 px-4 rounded-lg transition-all text-center"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Get Started

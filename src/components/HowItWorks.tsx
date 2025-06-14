@@ -1,107 +1,117 @@
 
-import React, { useState } from 'react';
-import { Target, Users, LineChart } from 'lucide-react';
-import StepContent from './how-it-works/StepContent';
+import React from 'react';
 import { motion } from 'framer-motion';
+import { Upload, Sparkles, Mail, ArrowRight } from 'lucide-react';
 
 const HowItWorks = () => {
-  const [activeStep, setActiveStep] = useState(1);
-
-  // Steps data
   const steps = [
     {
-      id: 1,
-      icon: <Target className="w-4 h-4" />,
-      title: "AI Identifies Where Your Buyers Engage",
-      description: "Our AI scans social media to find where your target audience is most active, identifying the exact channels, topics, and content they engage with.",
-      highlightText: "AI identifies:",
-      highlightDetails: "Relevant conversations, active communities, and engagement opportunities",
-      gifUrl: "/lovable-uploads/50d7bc89-98fd-49a5-b67f-94230c5d3ca5.png"
+      icon: Upload,
+      title: "Upload your team's spreadsheet",
+      description: "Simply drag and drop your Excel or CSV file with your team's data",
+      color: "from-blue-500 to-cyan-500"
     },
     {
-      id: 2,
-      icon: <Users className="w-4 h-4" />,
-      title: "AI Auto-Warms & Builds Trust",
-      description: "Convrt creates meaningful touchpoints that position you as a trusted advisor by engaging with prospects' content and contributing value.",
-      highlightText: "AI automates:",
-      highlightDetails: "Targeted comments, relevant reactions, and personalized interactions",
-      gifUrl: "https://api.microlink.io?url=https%3A%2F%2Fgiphy.com%2Fgifs%2Frevolutioncomedy-handshake-revolutioncomedy-icommitcombustion-kFHbqSdogIS0qtX6Pf&embed=true&screenshot=true&meta=false"
+      icon: Sparkles,
+      title: "Generate AI-powered highlight reels",
+      description: "Our AI transforms boring data into engaging, story-driven slides",
+      color: "from-purple-500 to-pink-500"
     },
     {
-      id: 3,
-      icon: <LineChart className="w-4 h-4" />,
-      title: "AI Converts Warm Leads Into Pipeline",
-      description: "With pre-established trust, your outreach achieves 15x higher conversion rates, turning social connections into qualified leads and deals.",
-      highlightText: "AI delivers:",
-      highlightDetails: "Warmed leads, engagement analytics, and conversion opportunities",
-      gifUrl: "https://api.microlink.io?url=https%3A%2F%2Fgiphy.com%2Fgifs%2Fchart-jtECu4TAPnhbGv2iwx&embed=true&screenshot=true&meta=false"
+      icon: Mail,
+      title: "Send automatically via email",
+      description: "Beautiful highlight reels delivered straight to your team's inbox",
+      color: "from-green-500 to-emerald-500"
     }
   ];
 
-  const handleStepClick = (stepId: number) => {
-    setActiveStep(stepId);
-  };
-
   return (
-    <section className="relative py-4 bg-white" id="how-it-works">
-      <div className="container-section py-4">
-        <div className="max-w-3xl mx-auto text-center mb-6">
-          <div className="section-tag">
-            From Ignored to Trusted
+    <section className="py-20 bg-white" id="how-it-works">
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true }}
+          className="max-w-6xl mx-auto"
+        >
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              How It Works
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Transform your data into engaging stories in just three simple steps
+            </p>
           </div>
-          <h2 className="heading-lg text-convrt-dark-blue mb-4">
-            How <span className="gradient-text">Convrt.ai</span> Works in 3 Steps
-          </h2>
-          <p className="text-convrt-dark-blue/80 text-lg max-w-2xl mx-auto">
-            Our AI-driven platform automates social engagement for your sales and GTM teams, transforming cold outreach into warm connections.
-          </p>
-        </div>
-        
-        <div className="max-w-5xl mx-auto bg-gray-100 rounded-2xl overflow-hidden">
-          <div className="flex flex-col lg:flex-row h-[600px]">
-            {/* Steps Section - Now on the left */}
-            <div className="lg:w-1/3 flex flex-col gap-1 p-4 bg-gray-50">
-              {steps.map((step) => (
-                <StepContent
-                  key={step.id}
-                  stepNumber={step.id}
-                  title={step.title}
-                  description={step.description}
-                  highlightText={step.highlightText}
-                  highlightDetails={step.highlightDetails}
-                  icon={step.icon}
-                  isActive={activeStep === step.id}
-                  onClick={() => handleStepClick(step.id)}
-                />
-              ))}
-            </div>
-            
-            {/* Image Display - Now covering the entire right section */}
-            <div className="lg:w-2/3 relative h-full">
-              {steps.map((step) => (
-                <motion.div 
-                  key={step.id}
-                  className="absolute inset-0 h-full w-full"
-                  initial={{ opacity: 0 }}
-                  animate={{ 
-                    opacity: activeStep === step.id ? 1 : 0,
-                    zIndex: activeStep === step.id ? 10 : 1
-                  }}
-                  transition={{ 
-                    duration: 0.5, 
-                    ease: "easeInOut"
-                  }}
-                >
-                  <img 
-                    src={step.gifUrl} 
-                    alt={`Step ${step.id}: ${step.title}`} 
-                    className="w-full h-full object-cover object-center"
-                  />
-                </motion.div>
-              ))}
-            </div>
+
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+            {steps.map((step, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                viewport={{ once: true }}
+                className="relative"
+              >
+                {/* Connection Line */}
+                {index < steps.length - 1 && (
+                  <div className="hidden md:block absolute top-16 left-full w-full z-0">
+                    <ArrowRight className="w-8 h-8 text-gray-300 mx-auto" />
+                  </div>
+                )}
+                
+                <div className="relative z-10 text-center">
+                  {/* Icon */}
+                  <div className={`w-24 h-24 mx-auto mb-6 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-xl`}>
+                    <step.icon className="w-12 h-12 text-white" />
+                  </div>
+                  
+                  {/* Step Number */}
+                  <div className="inline-flex items-center justify-center w-8 h-8 bg-gray-900 text-white text-sm font-bold rounded-full mb-4">
+                    {index + 1}
+                  </div>
+                  
+                  {/* Content */}
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        </div>
+
+          {/* Demo Visual */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            viewport={{ once: true }}
+            className="mt-16 text-center"
+          >
+            <div className="bg-gray-50 rounded-2xl p-8 max-w-2xl mx-auto">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4">See the magic happen</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white p-4 rounded-lg border border-gray-200">
+                  <div className="text-xs text-gray-500 mb-2">Input</div>
+                  <div className="space-y-1">
+                    <div className="h-2 bg-gray-300 rounded w-full"></div>
+                    <div className="h-2 bg-gray-300 rounded w-3/4"></div>
+                    <div className="h-2 bg-gray-300 rounded w-1/2"></div>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-purple-500 to-pink-500 p-4 rounded-lg text-white">
+                  <div className="text-xs text-purple-100 mb-2">Output</div>
+                  <div className="text-2xl mb-1">🎯</div>
+                  <div className="text-xs font-medium">Your team hit 95% of goals!</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

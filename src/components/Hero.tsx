@@ -1,15 +1,10 @@
 
-import React, { useRef } from 'react';
+import React from 'react';
 import AnimatedBackground from './AnimatedBackground';
-import { ArrowRight, Zap } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
-import PlatformDemo from './hero/PlatformDemo';
-import StatsSection from './hero/StatsSection';
 
 const Hero = () => {
-  const statsRef = useRef<HTMLDivElement>(null);
-  const demoRef = useRef<HTMLDivElement>(null);
-
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -32,8 +27,15 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen pt-20 pb-32 overflow-hidden bg-[#F9F6F3]">
+    <section className="relative min-h-screen pt-20 pb-32 overflow-hidden bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900">
       <AnimatedBackground />
+      
+      {/* Decorative elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/30 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 -left-40 w-80 h-80 bg-indigo-500/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-40 right-1/3 w-60 h-60 bg-pink-500/20 rounded-full blur-3xl"></div>
+      </div>
       
       <div className="container-section relative z-10">
         <motion.div
@@ -44,49 +46,62 @@ const Hero = () => {
         >
           <motion.div 
             variants={itemVariants}
-            className="inline-flex items-center px-4 py-2 rounded-full bg-convrt-purple/10 text-convrt-purple mb-6"
+            className="inline-flex items-center px-4 py-2 rounded-full bg-purple-500/20 text-purple-300 mb-6 backdrop-blur-sm border border-purple-500/30"
           >
-            <Zap className="w-4 h-4 mr-2" />
-            <span className="text-sm font-medium font-inter tracking-wide">The First AI Organic Outbound Platform</span>
+            <Sparkles className="w-4 h-4 mr-2" />
+            <span className="text-sm font-medium font-inter tracking-wide">Turn Data Into Stories</span>
           </motion.div>
           
           <motion.h1 
             variants={itemVariants}
-            className="font-inter font-bold text-4xl md:text-5xl lg:text-7xl tracking-tight max-w-4xl mx-auto mb-6 text-convrt-dark-blue leading-[1.1]"
+            className="font-inter font-bold text-4xl md:text-6xl lg:text-8xl tracking-tight max-w-4xl mx-auto mb-6 text-white leading-[1.1]"
           >
-            From <span className="text-[#EA384C] font-extrabold">Ignored</span> to <span className="text-[#6936F5] font-extrabold">Influential</span>
+            Your Work, <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 font-extrabold">Wrapped</span> ✨
           </motion.h1>
           
           <motion.p 
             variants={itemVariants}
-            className="font-inter text-xl text-convrt-dark-blue/80 max-w-3xl mx-auto mb-8 leading-relaxed"
+            className="font-inter text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed"
           >
-            AI that makes buyers trust you, so you win more deals
+            Turn spreadsheets into delightful AI-generated highlight reels for your team or audience.
           </motion.p>
           
           <motion.div 
             variants={itemVariants}
             className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16"
           >
-            <a href="#cta" className="button-primary flex items-center group font-inter font-medium">
-              Get Started
+            <a href="#auth" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-4 px-8 rounded-xl transition-all hover:shadow-xl hover:shadow-purple-500/25 hover:scale-[1.02] active:scale-[0.98] flex items-center group font-inter text-lg">
+              Try Me
               <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
             </a>
-            <a href="#how-it-works" className="button-outline font-inter">
+            <a href="#how-it-works" className="border border-gray-600 bg-gray-800/50 backdrop-blur-sm text-white font-medium py-4 px-8 rounded-xl transition-all hover:bg-gray-700/50 hover:scale-[1.02] active:scale-[0.98] font-inter text-lg">
               See How It Works
             </a>
           </motion.div>
           
-          {/* Modern Platform Showcase */}
+          {/* Hero Visual - Mock Wrapped Card */}
           <motion.div 
-            ref={demoRef}
             variants={itemVariants}
+            className="max-w-md mx-auto"
           >
-            <PlatformDemo />
+            <div className="relative bg-gradient-to-br from-purple-600 to-indigo-600 rounded-2xl p-8 shadow-2xl border border-purple-400/20 backdrop-blur-sm">
+              <div className="absolute top-4 right-4 text-xs bg-black/20 px-2 py-1 rounded-md text-white/80">
+                Generated by AI
+              </div>
+              <div className="text-center">
+                <div className="text-6xl mb-4">📊</div>
+                <h3 className="text-white text-xl font-bold mb-2">Your Q4 Highlights</h3>
+                <p className="text-purple-100 text-sm mb-4">
+                  You crushed 847 tasks this quarter! 🚀
+                </p>
+                <div className="bg-white/10 rounded-lg p-3">
+                  <p className="text-white/90 text-xs">
+                    Most productive day: Tuesday 💪
+                  </p>
+                </div>
+              </div>
+            </div>
           </motion.div>
-          
-          {/* Stats Section - Enhanced with better styling and icons */}
-          <StatsSection statsRef={statsRef} />
         </motion.div>
       </div>
     </section>
