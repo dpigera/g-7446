@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -78,6 +78,7 @@ const templates = [
 const ChooseTheme = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { toast } = useToast();
   const [selectedTheme, setSelectedTheme] = useState<string>('vibrant');
@@ -111,8 +112,9 @@ const ChooseTheme = () => {
         } else if (project) {
           setSelectedTheme(project.theme || 'vibrant');
           setProjectName(project.name || 'PROJECT');
-          // If theme is already saved, show the final table
-          if (project.theme) {
+          // If theme is already saved OR if showTable param is present, show the final table
+          const shouldShowTable = project.theme || searchParams.get('showTable') === 'true';
+          if (shouldShowTable) {
             setShowFinalTable(true);
           }
         }
@@ -145,7 +147,7 @@ const ChooseTheme = () => {
     };
 
     loadProjectData();
-  }, [projectId]);
+  }, [projectId, searchParams]);
 
   if (!projectId) {
     return (
@@ -298,7 +300,7 @@ const ChooseTheme = () => {
       <nav className="border-b border-white/20 bg-black/50 backdrop-blur-lg">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="text-2xl font-bold text-white">
-            Wrapped<span className="text-yellow-400">.ai</span>
+            Wrappd<span className="text-yellow-400">.ai</span>
           </div>
           <Button 
             onClick={() => navigate(`/create-project/create-content/${projectId}`)}

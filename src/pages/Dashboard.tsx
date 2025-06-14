@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -49,9 +48,9 @@ const Dashboard = () => {
       return;
     }
 
-    // If project has a theme, go directly to Step 4 (Choose Theme)
+    // If project has a theme, go directly to Step 4 (Choose Theme) with showFinalTable=true
     if (project?.theme) {
-      navigate(`/create-project/choose-theme/${projectId}`);
+      navigate(`/create-project/choose-theme/${projectId}?showTable=true`);
       return;
     }
 
