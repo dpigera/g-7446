@@ -52,8 +52,17 @@ Ask GPT-4 to return 5–6 slide captions (1 sentence each, playful tone, emojis 
           return;
         }
 
-        // Only show users who have generated captions
-        const usersWithCaptions = data?.filter(user => user.wrap_captions && user.wrap_captions.length > 0) || [];
+        // Filter and type-cast users who have generated captions
+        const usersWithCaptions = data?.filter(user => {
+          // Type check: ensure wrap_captions is an array with content
+          return user.wrap_captions && 
+                 Array.isArray(user.wrap_captions) && 
+                 user.wrap_captions.length > 0;
+        }).map(user => ({
+          ...user,
+          wrap_captions: user.wrap_captions as string[]
+        })) || [];
+
         if (usersWithCaptions.length > 0) {
           setGeneratedUsers(usersWithCaptions);
         }
