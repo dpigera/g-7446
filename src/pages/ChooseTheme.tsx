@@ -45,6 +45,33 @@ const templates = [
       textColor: '#FFFFFF',
       accentColor: '#9F7AEA'
     }
+  },
+  {
+    id: 'ocean',
+    name: 'Ocean',
+    preview: {
+      backgroundColor: '#1E40AF',
+      textColor: '#FFFFFF',
+      accentColor: '#06B6D4'
+    }
+  },
+  {
+    id: 'sunset',
+    name: 'Sunset',
+    preview: {
+      backgroundColor: '#DC2626',
+      textColor: '#FFFFFF',
+      accentColor: '#F59E0B'
+    }
+  },
+  {
+    id: 'forest',
+    name: 'Forest',
+    preview: {
+      backgroundColor: '#059669',
+      textColor: '#FFFFFF',
+      accentColor: '#84CC16'
+    }
   }
 ];
 
