@@ -8,7 +8,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signInWithGoogle: () => Promise<void>;
+  // signInWithGoogle: () => Promise<void>; // Commented out for now
   signUpWithEmail: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
   signInWithEmail: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
@@ -52,6 +52,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe();
   }, [toast]);
 
+  // Commented out Google sign-in for now
+  /*
   const signInWithGoogle = async () => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -81,6 +83,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
     }
   };
+  */
 
   const signUpWithEmail = async (email: string, password: string, fullName: string) => {
     try {
@@ -171,7 +174,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     user,
     session,
     loading,
-    signInWithGoogle,
+    // signInWithGoogle, // Commented out for now
     signUpWithEmail,
     signInWithEmail,
     signOut,

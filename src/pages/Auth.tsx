@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Auth = () => {
-  const { user, loading, signInWithGoogle, signInWithEmail, signUpWithEmail } = useAuth();
+  const { user, loading, /* signInWithGoogle, */ signInWithEmail, signUpWithEmail } = useAuth();
   const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
   const [fullName, setFullName] = useState('');
@@ -125,6 +125,8 @@ const Auth = () => {
               </Button>
             </form>
 
+            {/* Commented out Google sign-in for now */}
+            {/*
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-white/20"></div>
@@ -147,6 +149,7 @@ const Auth = () => {
               </svg>
               <span>Continue with Google</span>
             </Button>
+            */}
 
             <div className="text-center">
               <button

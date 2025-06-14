@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import SignUpForm from '@/components/SignUpForm';
 
 const AuthSection = () => {
-  const { user, signInWithGoogle } = useAuth();
+  const { user, /* signInWithGoogle */ } = useAuth();
   const navigate = useNavigate();
   const [showSignUp, setShowSignUp] = useState(false);
 
@@ -91,6 +91,8 @@ const AuthSection = () => {
                         <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
                       </button>
 
+                      {/* Commented out Google sign-in for now */}
+                      {/*
                       <div className="relative">
                         <div className="absolute inset-0 flex items-center">
                           <div className="w-full border-t border-white/20"></div>
@@ -100,7 +102,6 @@ const AuthSection = () => {
                         </div>
                       </div>
 
-                      {/* Google Sign In */}
                       <button 
                         onClick={signInWithGoogle}
                         className="w-full bg-white hover:bg-gray-100 text-black font-medium py-3 px-4 rounded-lg transition-all border border-gray-300 flex items-center justify-center space-x-3"
@@ -113,6 +114,7 @@ const AuthSection = () => {
                         </svg>
                         <span>Continue with Google</span>
                       </button>
+                      */}
 
                       <div className="text-center">
                         <button
