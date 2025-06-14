@@ -5,7 +5,7 @@ import { Mail, Clock, Users, CheckCircle } from 'lucide-react';
 
 const AutomatedDelivery = () => {
   return (
-    <section className="py-20 bg-gradient-to-br from-indigo-50 to-purple-50" id="delivery">
+    <section className="py-20 bg-gradient-to-br from-yellow-50 to-yellow-100" id="delivery">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -34,8 +34,8 @@ const AutomatedDelivery = () => {
               className="space-y-8"
             >
               <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-6 h-6 text-black" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -49,8 +49,8 @@ const AutomatedDelivery = () => {
               </div>
 
               <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Users className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-yellow-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Users className="w-6 h-6 text-black" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -64,7 +64,7 @@ const AutomatedDelivery = () => {
               </div>
 
               <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-yellow-700 rounded-xl flex items-center justify-center flex-shrink-0">
                   <CheckCircle className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -115,19 +115,19 @@ const AutomatedDelivery = () => {
 
                   {/* Embedded Slides */}
                   <div className="space-y-4">
-                    <div className="bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg p-4 text-white text-center">
+                    <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg p-4 text-black text-center">
                       <div className="text-2xl mb-1">🚀</div>
                       <div className="text-sm font-medium">Your team completed 247% more tasks!</div>
                     </div>
                     
-                    <div className="bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg p-4 text-white text-center">
+                    <div className="bg-gradient-to-br from-yellow-600 to-yellow-700 rounded-lg p-4 text-white text-center">
                       <div className="text-2xl mb-1">⭐</div>
                       <div className="text-sm font-medium">Customer satisfaction hit an all-time high</div>
                     </div>
                   </div>
 
                   <div className="mt-6 text-center">
-                    <button className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                    <button className="bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
                       View Full Report
                     </button>
                   </div>
@@ -135,10 +135,10 @@ const AutomatedDelivery = () => {
               </div>
 
               {/* Floating delivery indicators */}
-              <div className="absolute -top-4 -right-4 bg-green-500 text-white p-2 rounded-full">
+              <div className="absolute -top-4 -right-4 bg-yellow-500 text-black p-2 rounded-full">
                 <Mail className="w-4 h-4" />
               </div>
-              <div className="absolute -bottom-4 -left-4 bg-blue-500 text-white p-2 rounded-full">
+              <div className="absolute -bottom-4 -left-4 bg-yellow-600 text-white p-2 rounded-full">
                 <CheckCircle className="w-4 h-4" />
               </div>
             </motion.div>

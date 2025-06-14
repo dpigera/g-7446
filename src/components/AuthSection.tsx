@@ -5,7 +5,7 @@ import { ArrowRight, Mail, Chrome } from 'lucide-react';
 
 const AuthSection = () => {
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900" id="auth">
+    <section className="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-black" id="auth">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -43,12 +43,12 @@ const AuthSection = () => {
                 <input
                   type="email"
                   placeholder="you@company.com"
-                  className="w-full px-4 py-3 bg-white/90 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-white/90 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                 />
               </div>
 
               {/* Primary CTA */}
-              <button className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-4 px-6 rounded-lg transition-all hover:shadow-xl hover:shadow-purple-500/25 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center group">
+              <button className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold py-4 px-6 rounded-lg transition-all hover:shadow-xl hover:shadow-yellow-500/25 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center group">
                 Get Started Free
                 <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
               </button>
@@ -87,9 +87,9 @@ const AuthSection = () => {
             {/* Terms */}
             <p className="text-xs text-gray-400 mt-6">
               By signing up, you agree to our{' '}
-              <a href="#" className="text-purple-400 hover:text-purple-300">Terms of Service</a>{' '}
+              <a href="#" className="text-yellow-400 hover:text-yellow-300">Terms of Service</a>{' '}
               and{' '}
-              <a href="#" className="text-purple-400 hover:text-purple-300">Privacy Policy</a>
+              <a href="#" className="text-yellow-400 hover:text-yellow-300">Privacy Policy</a>
             </p>
           </motion.div>
 
