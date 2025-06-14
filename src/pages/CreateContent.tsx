@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -35,6 +35,35 @@ Ask GPT-4 to return 5–6 slide captions (1 sentence each, playful tone, emojis 
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedUsers, setGeneratedUsers] = useState<UserWithCaptions[]>([]);
   const [error, setError] = useState<string | null>(null);
+
+  // Load existing content when page loads
+  useEffect(() => {
+    const loadExistingContent = async () => {
+      if (!projectId) return;
+
+      try {
+        const { data, error } = await supabase
+          .from('project_users')
+          .select('id, first_name, last_name, email, wrap_captions')
+          .eq('project_id', projectId);
+
+        if (error) {
+          console.error('Error loading existing content:', error);
+          return;
+        }
+
+        // Only show users who have generated captions
+        const usersWithCaptions = data?.filter(user => user.wrap_captions && user.wrap_captions.length > 0) || [];
+        if (usersWithCaptions.length > 0) {
+          setGeneratedUsers(usersWithCaptions);
+        }
+      } catch (err) {
+        console.error('Error loading existing content:', err);
+      }
+    };
+
+    loadExistingContent();
+  }, [projectId]);
 
   if (!projectId) {
     return (
@@ -230,19 +259,20 @@ Ask GPT-4 to return 5–6 slide captions (1 sentence each, playful tone, emojis 
                   <Table>
                     <TableHeader>
                       <TableRow className="border-white/20">
-                        <TableHead className="text-gray-300">First Name</TableHead>
-                        <TableHead className="text-gray-300">Last Name</TableHead>
-                        <TableHead className="text-gray-300">Email</TableHead>
-                        <TableHead className="text-gray-300">Generated Captions</TableHead>
+                        <TableHead className="text-gray-300 w-1/3">User</TableHead>
+                        <TableHead className="text-gray-300">Captions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {generatedUsers.map((user) => (
                         <TableRow key={user.id} className="border-white/20">
-                          <TableCell className="text-white">{user.first_name}</TableCell>
-                          <TableCell className="text-white">{user.last_name}</TableCell>
-                          <TableCell className="text-gray-300">{user.email}</TableCell>
-                          <TableCell className="text-gray-300">
+                          <TableCell className="text-white align-top">
+                            <div>
+                              <div className="font-medium">{user.first_name} {user.last_name}</div>
+                              <div className="text-gray-300 text-sm">{user.email}</div>
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-gray-300 align-top">
                             {user.wrap_captions && user.wrap_captions.length > 0 ? (
                               <ul className="space-y-1">
                                 {user.wrap_captions.map((caption, index) => (
