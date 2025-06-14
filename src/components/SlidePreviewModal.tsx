@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ReactMarkdown from 'react-markdown';
 
 interface SlidePreviewModalProps {
   isOpen: boolean;
@@ -151,12 +152,26 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                     </div>
                   </>
                 ) : (
-                  // Content slides
+                  // Content slides with markdown rendering
                   <div
-                    className="text-2xl font-bold leading-relaxed px-4"
+                    className="text-2xl font-bold leading-relaxed px-4 prose prose-invert max-w-none"
                     style={{ color: themeColors.textColor }}
                   >
-                    {captions[currentSlide - 1]}
+                    <ReactMarkdown
+                      components={{
+                        p: ({ children }) => <div className="mb-4">{children}</div>,
+                        strong: ({ children }) => <strong className="font-black">{children}</strong>,
+                        em: ({ children }) => <em className="italic">{children}</em>,
+                        h1: ({ children }) => <h1 className="text-4xl font-black mb-4">{children}</h1>,
+                        h2: ({ children }) => <h2 className="text-3xl font-bold mb-3">{children}</h2>,
+                        h3: ({ children }) => <h3 className="text-2xl font-bold mb-2">{children}</h3>,
+                        ul: ({ children }) => <ul className="list-disc list-inside mb-4">{children}</ul>,
+                        ol: ({ children }) => <ol className="list-decimal list-inside mb-4">{children}</ol>,
+                        li: ({ children }) => <li className="mb-1">{children}</li>,
+                      }}
+                    >
+                      {captions[currentSlide - 1]}
+                    </ReactMarkdown>
                   </div>
                 )}
               </div>
