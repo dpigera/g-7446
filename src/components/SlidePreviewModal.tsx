@@ -20,24 +20,27 @@ const getThemeColors = (theme: string) => {
         backgroundColor: '#FF6B35',
         textColor: '#FFFFFF',
         accentColor: '#FFE66D',
-        slideBackgrounds: ['#FF6B35', '#FF3E75', '#8B5CF6', '#06D6A0', '#FFD166', '#EF476F', '#118AB2'],
-        highlightColors: ['#FFE66D', '#FF9F1C', '#FCBF49', '#F77F00', '#D62828', '#FCBF49']
+        slideBackgrounds: ['#FF6B35', '#FF3E75', '#8B5CF6', '#06D6A0', '#FFD166', '#EF476F', '#118AB2', '#F72585', '#7209B7', '#F77F00'],
+        highlightColors: ['#FFE66D', '#FF9F1C', '#FCBF49', '#F77F00', '#D62828', '#FCBF49', '#00F5FF', '#FF1493', '#32CD32', '#FF4500'],
+        dynamicColors: ['#FF0080', '#00FF80', '#8000FF', '#FF8000', '#0080FF', '#FF0040', '#40FF00', '#8040FF', '#FF4080', '#00FF40']
       };
     case 'minimal':
       return {
         backgroundColor: '#000000',
         textColor: '#FFFFFF',
         accentColor: '#4ECDC4',
-        slideBackgrounds: ['#000000', '#1A1A2E', '#16213E', '#0F3460', '#E94560', '#533483', '#7209B7'],
-        highlightColors: ['#4ECDC4', '#A8E6CF', '#FFD93D', '#6BCF7F', '#4D96FF', '#9B59B6']
+        slideBackgrounds: ['#000000', '#1A1A2E', '#16213E', '#0F3460', '#E94560', '#533483', '#7209B7', '#2D1B69', '#8B0000', '#191970'],
+        highlightColors: ['#4ECDC4', '#A8E6CF', '#FFD93D', '#6BCF7F', '#4D96FF', '#9B59B6', '#FF69B4', '#00CED1', '#FF6347', '#98FB98'],
+        dynamicColors: ['#00FFFF', '#FF00FF', '#FFFF00', '#FF007F', '#7FFF00', '#007FFF', '#FF7F00', '#7F00FF', '#00FF7F', '#FF007F']
       };
     case 'dark':
       return {
         backgroundColor: '#2D3748',
         textColor: '#FFFFFF',
         accentColor: '#9F7AEA',
-        slideBackgrounds: ['#2D3748', '#4A5568', '#553C9A', '#667EEA', '#764BA2', '#F093FB', '#F5576C'],
-        highlightColors: ['#9F7AEA', '#ED64A6', '#48BB78', '#ED8936', '#4299E1', '#38B2AC']
+        slideBackgrounds: ['#2D3748', '#4A5568', '#553C9A', '#667EEA', '#764BA2', '#F093FB', '#F5576C', '#1A202C', '#2C5282', '#6B46C1'],
+        highlightColors: ['#9F7AEA', '#ED64A6', '#48BB78', '#ED8936', '#4299E1', '#38B2AC', '#F56565', '#68D391', '#4FD1C7', '#FC8181'],
+        dynamicColors: ['#E53E3E', '#38A169', '#3182CE', '#805AD5', '#D69E2E', '#319795', '#E53E3E', '#9F7AEA', '#48BB78', '#4299E1']
       };
     default:
       return {
@@ -45,13 +48,17 @@ const getThemeColors = (theme: string) => {
         textColor: '#FFFFFF',
         accentColor: '#FFE66D',
         slideBackgrounds: ['#FF6B35', '#FF3E75', '#8B5CF6', '#06D6A0', '#FFD166', '#EF476F', '#118AB2'],
-        highlightColors: ['#FFE66D', '#FF9F1C', '#FCBF49', '#F77F00', '#D62828', '#FCBF49']
+        highlightColors: ['#FFE66D', '#FF9F1C', '#FCBF49', '#F77F00', '#D62828', '#FCBF49'],
+        dynamicColors: ['#FF0080', '#00FF80', '#8000FF', '#FF8000', '#0080FF']
       };
   }
 };
 
 const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: SlidePreviewModalProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [dynamicBackgroundColor, setDynamicBackgroundColor] = useState('');
+  const [dynamicTextColor, setDynamicTextColor] = useState('');
+  const [colorCycleKey, setColorCycleKey] = useState(0);
   const themeColors = getThemeColors(theme);
   
   const totalSlides = captions.length;
@@ -61,6 +68,22 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
       setCurrentSlide(0);
     }
   }, [isOpen]);
+
+  // Dynamic color cycling effect
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const interval = setInterval(() => {
+      const randomBgColor = themeColors.dynamicColors[Math.floor(Math.random() * themeColors.dynamicColors.length)];
+      const randomTextColor = themeColors.highlightColors[Math.floor(Math.random() * themeColors.highlightColors.length)];
+      
+      setDynamicBackgroundColor(randomBgColor);
+      setDynamicTextColor(randomTextColor);
+      setColorCycleKey(prev => prev + 1);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [isOpen, themeColors.dynamicColors, themeColors.highlightColors]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % totalSlides);
@@ -76,9 +99,9 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
 
   // Get dynamic background color for current slide
   const getCurrentSlideBackground = () => {
-    if (currentSlide === 0) return themeColors.backgroundColor;
+    if (currentSlide === 0) return dynamicBackgroundColor || themeColors.backgroundColor;
     const slideIndex = (currentSlide - 1) % themeColors.slideBackgrounds.length;
-    return themeColors.slideBackgrounds[slideIndex];
+    return dynamicBackgroundColor || themeColors.slideBackgrounds[slideIndex];
   };
 
   // Get random highlight color
@@ -91,211 +114,401 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+      <motion.div 
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.3 }}
-          className="relative bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-6 max-w-4xl w-full mx-4"
+          initial={{ opacity: 0, scale: 0.8, rotateY: -15 }}
+          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+          exit={{ opacity: 0, scale: 0.8, rotateY: 15 }}
+          transition={{ duration: 0.5, type: "spring", bounce: 0.3 }}
+          className="relative bg-white/15 backdrop-blur-xl border-2 border-white/30 rounded-2xl p-8 max-w-5xl w-full mx-4 shadow-2xl"
+          style={{
+            boxShadow: '0 0 50px rgba(255, 255, 255, 0.1), inset 0 0 50px rgba(255, 255, 255, 0.05)'
+          }}
         >
           {/* Close Button */}
-          <Button
-            onClick={onClose}
-            variant="ghost"
-            size="icon"
-            className="absolute top-4 right-4 z-10 text-white hover:bg-white/20"
+          <motion.div
+            whileHover={{ scale: 1.1, rotate: 90 }}
+            whileTap={{ scale: 0.9 }}
           >
-            <X className="w-5 h-5" />
-          </Button>
+            <Button
+              onClick={onClose}
+              variant="ghost"
+              size="icon"
+              className="absolute top-6 right-6 z-10 text-white hover:bg-white/30 transition-all duration-300"
+            >
+              <X className="w-6 h-6" />
+            </Button>
+          </motion.div>
 
           {/* Progress Bars */}
-          <div className="flex space-x-1 mb-6">
+          <div className="flex space-x-2 mb-8">
             {captions.map((_, index) => (
-              <button
+              <motion.button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className="flex-1 h-1 bg-white/30 rounded-full overflow-hidden cursor-pointer"
+                className="flex-1 h-2 bg-white/20 rounded-full overflow-hidden cursor-pointer relative"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <div
-                  className={`h-full bg-white transition-all duration-300 ${
-                    index === currentSlide ? 'w-full' : index < currentSlide ? 'w-full' : 'w-0'
-                  }`}
+                <motion.div
+                  className="h-full bg-gradient-to-r from-white via-yellow-300 to-white rounded-full"
+                  initial={{ width: index < currentSlide ? '100%' : index === currentSlide ? '100%' : '0%' }}
+                  animate={{ 
+                    width: index < currentSlide ? '100%' : index === currentSlide ? '100%' : '0%',
+                    boxShadow: index === currentSlide ? '0 0 20px rgba(255, 255, 255, 0.8)' : '0 0 0px rgba(255, 255, 255, 0)'
+                  }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
                 />
-              </button>
+              </motion.button>
             ))}
           </div>
 
           {/* Slide Container */}
           <div className="relative flex items-center justify-center">
             {/* Previous Button */}
-            <Button
-              onClick={prevSlide}
-              variant="ghost"
-              size="icon"
-              className="absolute left-0 z-10 text-white hover:bg-white/20"
-              disabled={totalSlides <= 1}
+            <motion.div
+              whileHover={{ scale: 1.2, x: -5 }}
+              whileTap={{ scale: 0.8 }}
             >
-              <ChevronLeft className="w-6 h-6" />
-            </Button>
+              <Button
+                onClick={prevSlide}
+                variant="ghost"
+                size="icon"
+                className="absolute left-0 z-10 text-white hover:bg-white/30 transition-all duration-300"
+                disabled={totalSlides <= 1}
+              >
+                <ChevronLeft className="w-8 h-8" />
+              </Button>
+            </motion.div>
 
             {/* Slide */}
             <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-              className="w-[700px] h-[420px] rounded-lg overflow-hidden shadow-2xl relative"
-              style={{ backgroundColor: getCurrentSlideBackground() }}
+              key={`${currentSlide}-${colorCycleKey}`}
+              initial={{ 
+                opacity: 0, 
+                scale: 0.8, 
+                rotateX: -20,
+                z: -100
+              }}
+              animate={{ 
+                opacity: 1, 
+                scale: 1, 
+                rotateX: 0,
+                z: 0
+              }}
+              exit={{ 
+                opacity: 0, 
+                scale: 0.8, 
+                rotateX: 20,
+                z: -100
+              }}
+              transition={{ 
+                duration: 0.6, 
+                type: "spring", 
+                bounce: 0.4,
+                staggerChildren: 0.1
+              }}
+              className="w-[700px] h-[420px] rounded-2xl overflow-hidden shadow-2xl relative perspective-1000"
+              style={{ 
+                backgroundColor: getCurrentSlideBackground(),
+                boxShadow: `0 0 60px ${getCurrentSlideBackground()}40, inset 0 0 100px rgba(255, 255, 255, 0.1)`
+              }}
             >
-              {/* Dynamic gradient overlay */}
-              <div 
-                className="absolute inset-0 opacity-20"
-                style={{
-                  background: `linear-gradient(135deg, ${themeColors.accentColor}33, transparent 70%)`
+              {/* Animated gradient overlay */}
+              <motion.div 
+                className="absolute inset-0"
+                animate={{
+                  background: [
+                    `linear-gradient(135deg, ${themeColors.accentColor}20, transparent 70%)`,
+                    `linear-gradient(225deg, ${dynamicTextColor || themeColors.accentColor}30, transparent 60%)`,
+                    `linear-gradient(45deg, ${themeColors.accentColor}25, transparent 80%)`
+                  ]
                 }}
+                transition={{ duration: 4, repeat: Infinity, repeatType: "reverse" }}
               />
               
-              <div className="relative w-full h-full flex flex-col justify-center items-center text-center p-8">
+              {/* Floating particles effect */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {[...Array(8)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-2 h-2 bg-white/30 rounded-full"
+                    animate={{
+                      x: [0, Math.random() * 700],
+                      y: [0, Math.random() * 420],
+                      opacity: [0, 1, 0],
+                      scale: [0, 1, 0]
+                    }}
+                    transition={{
+                      duration: 5 + Math.random() * 3,
+                      repeat: Infinity,
+                      delay: Math.random() * 2
+                    }}
+                    style={{
+                      left: Math.random() * 100 + '%',
+                      top: Math.random() * 100 + '%'
+                    }}
+                  />
+                ))}
+              </div>
+              
+              <div className="relative w-full h-full flex flex-col justify-center items-center text-center p-8 z-10">
                 {currentSlide === 0 ? (
-                  // Title slide with enhanced styling
-                  <>
+                  // Title slide with enhanced dramatic styling
+                  <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                  >
                     <motion.div
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                      className="text-3xl font-black uppercase tracking-wide mb-4"
-                      style={{ color: themeColors.textColor }}
+                      initial={{ scale: 0.5, rotateY: -180 }}
+                      animate={{ scale: 1, rotateY: 0 }}
+                      transition={{ delay: 0.3, duration: 0.8, type: "spring" }}
+                      className="text-4xl font-black uppercase tracking-wider mb-6"
+                      style={{ 
+                        color: dynamicTextColor || themeColors.textColor,
+                        textShadow: '0 0 30px rgba(255,255,255,0.5)'
+                      }}
                     >
                       {userName.split(' ')[0]}'S 2024
                     </motion.div>
                     <motion.div
-                      initial={{ scale: 0.5, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 0.4 }}
-                      className="text-6xl font-black uppercase mb-4"
+                      initial={{ scale: 0.3, opacity: 0 }}
+                      animate={{ 
+                        scale: [0.3, 1.2, 1], 
+                        opacity: 1,
+                        rotateZ: [0, 5, -5, 0]
+                      }}
+                      transition={{ 
+                        delay: 0.6, 
+                        duration: 1.2, 
+                        type: "spring",
+                        bounce: 0.6
+                      }}
+                      className="text-8xl font-black uppercase mb-6"
                       style={{ 
                         color: themeColors.accentColor,
-                        textShadow: '0 0 20px rgba(255,255,255,0.3)'
+                        textShadow: '0 0 40px rgba(255,255,255,0.7), 0 0 80px rgba(255,255,255,0.3)',
+                        filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.5))'
                       }}
                     >
                       WRAPPED
                     </motion.div>
                     <motion.div
-                      initial={{ y: 20, opacity: 0 }}
+                      initial={{ y: 30, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.6 }}
-                      className="text-2xl font-bold uppercase mt-4"
-                      style={{ color: themeColors.textColor }}
+                      transition={{ delay: 1, duration: 0.6 }}
+                      className="text-3xl font-bold uppercase mt-4"
+                      style={{ 
+                        color: dynamicTextColor || themeColors.textColor,
+                        textShadow: '0 0 20px rgba(255,255,255,0.4)'
+                      }}
                     >
                       EXPERIENCE
                     </motion.div>
-                  </>
+                  </motion.div>
                 ) : (
-                  // Content slides with dynamic markdown rendering
-                  <div className="text-2xl font-bold leading-relaxed px-4 prose prose-invert max-w-none">
+                  // Content slides with dramatic markdown rendering
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8, y: 30 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    transition={{ duration: 0.6, type: "spring" }}
+                    className="text-2xl font-bold leading-relaxed px-4 prose prose-invert max-w-none"
+                  >
                     <ReactMarkdown
                       components={{
                         p: ({ children }) => (
-                          <div className="mb-6 text-white leading-tight" style={{ fontSize: '1.8rem' }}>
+                          <motion.div 
+                            className="mb-6 text-white leading-tight" 
+                            style={{ fontSize: '1.8rem' }}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                          >
                             {children}
-                          </div>
+                          </motion.div>
                         ),
                         strong: ({ children }) => (
-                          <strong 
-                            className="font-black text-4xl inline-block mx-2 drop-shadow-lg"
+                          <motion.strong 
+                            className="font-black text-5xl inline-block mx-2"
                             style={{ 
-                              color: getRandomHighlightColor(),
-                              textShadow: '0 0 10px rgba(0,0,0,0.5)'
+                              color: dynamicTextColor || getRandomHighlightColor(),
+                              textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px currentColor',
+                              filter: 'drop-shadow(0 5px 10px rgba(0,0,0,0.5))'
+                            }}
+                            animate={{
+                              scale: [1, 1.1, 1],
+                              rotateZ: [-1, 1, -1, 0]
+                            }}
+                            transition={{ 
+                              duration: 2, 
+                              repeat: Infinity, 
+                              repeatType: "reverse",
+                              delay: Math.random() * 2
                             }}
                           >
                             {children}
-                          </strong>
+                          </motion.strong>
                         ),
                         em: ({ children }) => (
-                          <em 
-                            className="italic text-3xl font-bold"
+                          <motion.em 
+                            className="italic text-4xl font-bold"
                             style={{ 
-                              color: getRandomHighlightColor(),
-                              textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                              color: dynamicTextColor || getRandomHighlightColor(),
+                              textShadow: '0 0 15px currentColor, 0 5px 10px rgba(0,0,0,0.3)'
+                            }}
+                            animate={{
+                              opacity: [0.8, 1, 0.8],
+                              scale: [1, 1.05, 1]
+                            }}
+                            transition={{ 
+                              duration: 3, 
+                              repeat: Infinity,
+                              delay: Math.random()
                             }}
                           >
                             {children}
-                          </em>
+                          </motion.em>
                         ),
                         h1: ({ children }) => (
-                          <h1 
-                            className="text-5xl font-black mb-6 uppercase tracking-wide"
+                          <motion.h1 
+                            className="text-6xl font-black mb-6 uppercase tracking-wide"
                             style={{ 
                               color: themeColors.accentColor,
-                              textShadow: '0 0 15px rgba(255,255,255,0.3)'
+                              textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px currentColor'
+                            }}
+                            initial={{ scale: 0.8, rotateX: -20 }}
+                            animate={{ 
+                              scale: 1, 
+                              rotateX: 0,
+                              textShadow: [
+                                '0 0 30px rgba(255,255,255,0.8)',
+                                '0 0 50px rgba(255,255,255,1)',
+                                '0 0 30px rgba(255,255,255,0.8)'
+                              ]
+                            }}
+                            transition={{ 
+                              duration: 0.8,
+                              textShadow: { duration: 2, repeat: Infinity, repeatType: "reverse" }
                             }}
                           >
                             {children}
-                          </h1>
+                          </motion.h1>
                         ),
                         h2: ({ children }) => (
-                          <h2 
-                            className="text-4xl font-bold mb-4 uppercase"
+                          <motion.h2 
+                            className="text-5xl font-bold mb-4 uppercase"
                             style={{ 
-                              color: getRandomHighlightColor(),
-                              textShadow: '0 2px 8px rgba(0,0,0,0.4)'
+                              color: dynamicTextColor || getRandomHighlightColor(),
+                              textShadow: '0 0 25px currentColor, 0 5px 15px rgba(0,0,0,0.4)'
+                            }}
+                            animate={{
+                              y: [0, -5, 0],
+                              scale: [1, 1.02, 1]
+                            }}
+                            transition={{ 
+                              duration: 4, 
+                              repeat: Infinity,
+                              delay: 0.5
                             }}
                           >
                             {children}
-                          </h2>
+                          </motion.h2>
                         ),
                         h3: ({ children }) => (
-                          <h3 
-                            className="text-3xl font-bold mb-3"
+                          <motion.h3 
+                            className="text-4xl font-bold mb-3"
                             style={{ 
-                              color: getRandomHighlightColor()
+                              color: dynamicTextColor || getRandomHighlightColor(),
+                              textShadow: '0 0 20px currentColor'
                             }}
+                            animate={{ rotateZ: [-0.5, 0.5, -0.5] }}
+                            transition={{ duration: 6, repeat: Infinity }}
                           >
                             {children}
-                          </h3>
+                          </motion.h3>
                         ),
                         ul: ({ children }) => (
-                          <ul className="list-none mb-6 space-y-3">
+                          <motion.ul 
+                            className="list-none mb-6 space-y-4"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ staggerChildren: 0.2 }}
+                          >
                             {children}
-                          </ul>
+                          </motion.ul>
                         ),
                         ol: ({ children }) => (
-                          <ol className="list-none mb-6 space-y-3">
+                          <motion.ol 
+                            className="list-none mb-6 space-y-4"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ staggerChildren: 0.2 }}
+                          >
                             {children}
-                          </ol>
+                          </motion.ol>
                         ),
                         li: ({ children }) => (
-                          <li 
-                            className="mb-2 text-2xl font-semibold flex items-center justify-center"
+                          <motion.li 
+                            className="mb-3 text-2xl font-semibold flex items-center justify-center"
                             style={{ color: themeColors.textColor }}
+                            initial={{ x: -30, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ duration: 0.5 }}
                           >
-                            <span 
-                              className="inline-block w-3 h-3 rounded-full mr-3"
-                              style={{ backgroundColor: getRandomHighlightColor() }}
+                            <motion.span 
+                              className="inline-block w-4 h-4 rounded-full mr-4"
+                              style={{ backgroundColor: dynamicTextColor || getRandomHighlightColor() }}
+                              animate={{
+                                scale: [1, 1.3, 1],
+                                boxShadow: [
+                                  '0 0 10px currentColor',
+                                  '0 0 20px currentColor',
+                                  '0 0 10px currentColor'
+                                ]
+                              }}
+                              transition={{ 
+                                duration: 2, 
+                                repeat: Infinity,
+                                delay: Math.random() * 2
+                              }}
                             />
                             {children}
-                          </li>
+                          </motion.li>
                         ),
-                        // Custom component to handle numbers
+                        // Enhanced number highlighting
                         text: ({ children }) => {
                           if (typeof children === 'string') {
-                            // Split text and highlight numbers
                             return children.split(/(\d+(?:,\d+)*(?:\.\d+)?)/g).map((part, index) => {
                               if (/^\d+(?:,\d+)*(?:\.\d+)?$/.test(part)) {
                                 return (
-                                  <span
+                                  <motion.span
                                     key={index}
-                                    className="font-black text-5xl mx-1 inline-block"
+                                    className="font-black text-6xl mx-2 inline-block"
                                     style={{
-                                      color: getRandomHighlightColor(),
-                                      textShadow: '0 0 15px rgba(255,255,255,0.4)',
-                                      transform: 'scale(1.2)'
+                                      color: dynamicTextColor || getRandomHighlightColor(),
+                                      textShadow: '0 0 30px currentColor, 0 0 60px rgba(255,255,255,0.5)',
+                                      filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.6))'
+                                    }}
+                                    animate={{
+                                      scale: [1, 1.3, 1.1],
+                                      rotateZ: [-2, 2, -1, 0],
+                                      y: [0, -10, 0]
+                                    }}
+                                    transition={{ 
+                                      duration: 3, 
+                                      repeat: Infinity, 
+                                      repeatType: "reverse",
+                                      delay: Math.random() * 2
                                     }}
                                   >
                                     {part}
-                                  </span>
+                                  </motion.span>
                                 );
                               }
                               return part;
@@ -307,29 +520,44 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                     >
                       {captions[currentSlide - 1]}
                     </ReactMarkdown>
-                  </div>
+                  </motion.div>
                 )}
               </div>
             </motion.div>
 
             {/* Next Button */}
-            <Button
-              onClick={nextSlide}
-              variant="ghost"
-              size="icon"
-              className="absolute right-0 z-10 text-white hover:bg-white/20"
-              disabled={totalSlides <= 1}
+            <motion.div
+              whileHover={{ scale: 1.2, x: 5 }}
+              whileTap={{ scale: 0.8 }}
             >
-              <ChevronRight className="w-6 h-6" />
-            </Button>
+              <Button
+                onClick={nextSlide}
+                variant="ghost"
+                size="icon"
+                className="absolute right-0 z-10 text-white hover:bg-white/30 transition-all duration-300"
+                disabled={totalSlides <= 1}
+              >
+                <ChevronRight className="w-8 h-8" />
+              </Button>
+            </motion.div>
           </div>
 
           {/* Slide Counter */}
-          <div className="text-center mt-4 text-white/70">
+          <motion.div 
+            className="text-center mt-6 text-white/80 text-lg font-semibold"
+            animate={{ 
+              opacity: [0.6, 1, 0.6],
+              scale: [1, 1.05, 1]
+            }}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity 
+            }}
+          >
             {currentSlide + 1} / {totalSlides + 1}
-          </div>
+          </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
     </AnimatePresence>
   );
 };
