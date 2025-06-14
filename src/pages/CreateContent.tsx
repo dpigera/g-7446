@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -281,7 +280,7 @@ Ask GPT-4 to return 5–6 slide captions (1 sentence each, playful tone, emojis 
                     </TableHeader>
                     <TableBody>
                       {generatedUsers.map((user) => (
-                        <TableRow key={user.id} className="border-white/20">
+                        <TableRow key={user.id} className="border-white/20 hover:bg-gray-100/5">
                           <TableCell className="text-white align-top">
                             <div>
                               <div className="font-medium">{user.first_name} {user.last_name}</div>
