@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -82,26 +83,28 @@ const WrapViewer = () => {
       }
 
       try {
-        // Load project data
+        // Load project data - use maybeSingle() to handle cases where no project is found
         const { data: projectData, error: projectError } = await supabase
           .from('projects')
           .select('id, name, theme')
           .eq('id', projectId)
-          .single();
+          .maybeSingle();
 
         if (projectError) {
           console.error('Error loading project:', projectError);
-        } else {
+        } else if (projectData) {
           setProject(projectData);
+        } else {
+          console.log('No project found with ID:', projectId);
         }
 
-        // Load user data
+        // Load user data - use maybeSingle() to handle cases where no user is found
         const { data: userData, error: userError } = await supabase
           .from('project_users')
           .select('id, first_name, last_name, email, wrap_captions')
           .eq('project_id', projectId)
           .eq('id', userId)
-          .single();
+          .maybeSingle();
 
         if (userError) {
           console.error('Error loading user:', userError);
@@ -117,6 +120,8 @@ const WrapViewer = () => {
           };
           
           setUser(userWithCaptions);
+        } else {
+          console.log('No user found with ID:', userId, 'in project:', projectId);
         }
       } catch (err) {
         console.error('Error loading data:', err);
@@ -173,10 +178,18 @@ const WrapViewer = () => {
     );
   }
 
+  if (!project) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-lg">Project not found</div>
+      </div>
+    );
+  }
+
   if (!user || !user.wrap_captions || user.wrap_captions.length === 0) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white text-lg">No wrapped content found</div>
+        <div className="text-white text-lg">No wrapped content found for this user</div>
       </div>
     );
   }
