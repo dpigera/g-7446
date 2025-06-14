@@ -26,8 +26,8 @@ const UploadUsers = () => {
   };
 
   const handleContinue = () => {
-    // Navigate to next step (to be implemented)
-    navigate('/dashboard');
+    // Navigate to Step 3: Create Content
+    navigate(`/create-project/create-content/${projectId}`);
   };
 
   if (!projectId) {
