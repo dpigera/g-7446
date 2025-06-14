@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import CreateProject from "./pages/CreateProject";
 import UploadUsers from "./pages/UploadUsers";
 import CreateContent from "./pages/CreateContent";
+import ChooseTheme from "./pages/ChooseTheme";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -55,6 +56,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <CreateContent />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/create-project/choose-theme/:projectId" 
+              element={
+                <ProtectedRoute>
+                  <ChooseTheme />
                 </ProtectedRoute>
               } 
             />

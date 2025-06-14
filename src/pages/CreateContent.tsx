@@ -134,6 +134,10 @@ Ask GPT-4 to return 5–6 slide captions (1 sentence each, playful tone, emojis 
     }
   };
 
+  const handleNavigateToTheme = () => {
+    navigate(`/create-project/choose-theme/${projectId}`);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       {/* Navigation */}
@@ -264,6 +268,7 @@ Ask GPT-4 to return 5–6 slide captions (1 sentence each, playful tone, emojis 
                     Successfully generated captions for {generatedUsers.length} users
                   </CardDescription>
                   <Button 
+                    onClick={handleNavigateToTheme}
                     className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold"
                     size="lg"
                   >
@@ -306,6 +311,7 @@ Ask GPT-4 to return 5–6 slide captions (1 sentence each, playful tone, emojis 
                   </Table>
                   <div className="mt-6">
                     <Button 
+                      onClick={handleNavigateToTheme}
                       className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold"
                       size="lg"
                     >
