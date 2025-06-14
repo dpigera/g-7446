@@ -401,12 +401,6 @@ const ChooseTheme = () => {
                         >
                           {projectName.toUpperCase()}
                         </div>
-                        <div 
-                          className="text-base font-bold uppercase mt-2"
-                          style={{ color: template.preview.textColor }}
-                        >
-                          SLIDES
-                        </div>
                       </div>
                       
                       {/* Template Name */}
