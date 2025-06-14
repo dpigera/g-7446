@@ -47,7 +47,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <a href="/" className="flex items-center">
             <div className="text-2xl font-bold text-white">
-              Wrapped<span className="text-yellow-400">.ai</span>
+              Wrappd<span className="text-yellow-400">.ai</span>
             </div>
           </a>
         </div>

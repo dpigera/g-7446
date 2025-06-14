@@ -44,7 +44,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send email using Resend
     const emailResponse = await resend.emails.send({
-      from: "Wrapped.ai <noreply@resend.dev>",
+      from: "Wrappd.ai <noreply@resend.dev>",
       to: [userEmail],
       subject: `Your ${projectName} Wrapped is ready! 🎉`,
       html: `
@@ -81,7 +81,7 @@ const handler = async (req: Request): Promise<Response> => {
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           
           <p style="font-size: 12px; color: #999; text-align: center;">
-            This email was sent by Wrapped.ai<br>
+            This email was sent by Wrappd.ai<br>
             If you didn't request this, you can safely ignore this email.
           </p>
         </div>

@@ -69,7 +69,7 @@ const Hero = () => {
             variants={itemVariants}
             className="font-inter font-bold text-4xl md:text-6xl lg:text-8xl tracking-tight max-w-4xl mx-auto mb-6 leading-[1.1]"
           >
-            <span className="text-black">Your Work</span>, <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 font-extrabold">Wrapped</span> ✨
+            <span className="text-black">Your Work</span>, <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 font-extrabold">Wrappd</span> ✨
           </motion.h1>
           
           <motion.p 

@@ -44,7 +44,7 @@ const UploadUsers = () => {
       <nav className="border-b border-white/20 bg-black/50 backdrop-blur-lg">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="text-2xl font-bold text-white">
-            Wrapped<span className="text-yellow-400">.ai</span>
+            Wrappd<span className="text-yellow-400">.ai</span>
           </div>
           <Button 
             onClick={() => navigate('/dashboard')}

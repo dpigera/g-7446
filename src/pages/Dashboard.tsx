@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -83,7 +84,7 @@ const Dashboard = () => {
       <nav className="border-b border-white/20 bg-black/50 backdrop-blur-lg">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="text-2xl font-bold text-white">
-            Wrapped<span className="text-yellow-400">.ai</span>
+            Wrappd<span className="text-yellow-400">.ai</span>
           </div>
           <div className="flex items-center space-x-4">
             <span className="text-gray-300">Welcome, {user?.user_metadata?.full_name || user?.email}</span>
@@ -107,7 +108,7 @@ const Dashboard = () => {
               Welcome to Your Dashboard! 🎉
             </h1>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              You're successfully authenticated with Wrapped.ai. Start creating amazing data stories with AI.
+              You're successfully authenticated with Wrappd.ai. Start creating amazing data stories with AI.
             </p>
           </div>
 
