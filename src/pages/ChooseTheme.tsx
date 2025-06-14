@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ArrowLeft, Loader2, Play, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Loader2, Play, ExternalLink, Mail } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -89,6 +88,7 @@ const ChooseTheme = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserWithCaptions | null>(null);
   const [projectName, setProjectName] = useState<string>('');
+  const [sendingEmailTo, setSendingEmailTo] = useState<string | null>(null);
 
   // Load project theme and users when page loads
   useEffect(() => {
@@ -236,6 +236,54 @@ const ChooseTheme = () => {
         description: `No wrapped content found for ${userName}`,
         variant: "destructive",
       });
+    }
+  };
+
+  const handleSendEmail = async (userId: string, userName: string, userEmail: string) => {
+    if (!user) {
+      toast({
+        title: "Error",
+        description: "You must be logged in to send emails",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setSendingEmailTo(userId);
+    
+    try {
+      console.log('Sending email to:', userEmail, 'for user:', userName);
+
+      const { data, error } = await supabase.functions.invoke('send-wrap-email', {
+        body: {
+          projectId,
+          userId,
+          userEmail,
+          userName,
+          projectName
+        }
+      });
+
+      if (error) {
+        console.error('Error sending email:', error);
+        throw new Error(error.message || 'Failed to send email');
+      }
+
+      toast({
+        title: "Email Sent! 📧",
+        description: `Wrap link sent successfully to ${userName} at ${userEmail}`,
+      });
+
+    } catch (err) {
+      console.error('Error sending email:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to send email';
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setSendingEmailTo(null);
     }
   };
 
@@ -407,7 +455,7 @@ const ChooseTheme = () => {
                 <CardHeader>
                   <CardTitle className="text-white">🎉 Your Wrapped Slides Are Ready!</CardTitle>
                   <CardDescription className="text-gray-300">
-                    Click "Preview" to see slides in a modal or "Preview in new tab" to open in a separate tab
+                    Click "Preview" to see slides in a modal, "Preview in new tab" to open in a separate tab, or "Email to user" to send the wrap link directly to them
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -415,7 +463,7 @@ const ChooseTheme = () => {
                     <TableHeader>
                       <TableRow className="border-white/20">
                         <TableHead className="text-gray-300">Name</TableHead>
-                        <TableHead className="text-gray-300 w-64">Actions</TableHead>
+                        <TableHead className="text-gray-300 w-80">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -444,6 +492,24 @@ const ChooseTheme = () => {
                               >
                                 <ExternalLink className="w-4 h-4 mr-2" />
                                 Preview in new tab
+                              </Button>
+                              <Button
+                                onClick={() => handleSendEmail(user.id, `${user.first_name} ${user.last_name}`, user.email)}
+                                disabled={sendingEmailTo === user.id}
+                                className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white"
+                                size="sm"
+                              >
+                                {sendingEmailTo === user.id ? (
+                                  <>
+                                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                    Sending...
+                                  </>
+                                ) : (
+                                  <>
+                                    <Mail className="w-4 h-4 mr-2" />
+                                    Email to user
+                                  </>
+                                )}
                               </Button>
                             </div>
                           </TableCell>
