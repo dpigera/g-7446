@@ -280,15 +280,15 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                     <motion.div
                       initial={{ scale: 0.3, opacity: 0 }}
                       animate={{ 
-                        scale: [0.3, 1.2, 1], 
+                        scale: 1.2, 
                         opacity: 1,
                         rotateZ: [0, 5, -5, 0]
                       }}
                       transition={{ 
                         delay: 0.6, 
                         duration: 1.2, 
-                        type: "spring",
-                        bounce: 0.6
+                        type: "tween",
+                        rotateZ: { duration: 2, repeat: Infinity, type: "tween" }
                       }}
                       className="text-8xl font-black uppercase mb-6"
                       style={{ 
@@ -342,14 +342,15 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                               filter: 'drop-shadow(0 5px 10px rgba(0,0,0,0.5))'
                             }}
                             animate={{
-                              scale: [1, 1.1, 1],
-                              rotateZ: [-1, 1, -1, 0]
+                              scale: [1, 1.1],
+                              rotateZ: [-1, 1]
                             }}
                             transition={{ 
                               duration: 2, 
                               repeat: Infinity, 
                               repeatType: "reverse",
-                              delay: Math.random() * 2
+                              delay: Math.random() * 2,
+                              type: "tween"
                             }}
                           >
                             {children}
@@ -363,13 +364,15 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                               textShadow: '0 0 15px currentColor, 0 5px 10px rgba(0,0,0,0.3)'
                             }}
                             animate={{
-                              opacity: [0.8, 1, 0.8],
-                              scale: [1, 1.05, 1]
+                              opacity: [0.8, 1],
+                              scale: [1, 1.05]
                             }}
                             transition={{ 
                               duration: 3, 
                               repeat: Infinity,
-                              delay: Math.random()
+                              repeatType: "reverse",
+                              delay: Math.random(),
+                              type: "tween"
                             }}
                           >
                             {children}
@@ -388,13 +391,12 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                               rotateX: 0,
                               textShadow: [
                                 '0 0 30px rgba(255,255,255,0.8)',
-                                '0 0 50px rgba(255,255,255,1)',
-                                '0 0 30px rgba(255,255,255,0.8)'
+                                '0 0 50px rgba(255,255,255,1)'
                               ]
                             }}
                             transition={{ 
                               duration: 0.8,
-                              textShadow: { duration: 2, repeat: Infinity, repeatType: "reverse" }
+                              textShadow: { duration: 2, repeat: Infinity, repeatType: "reverse", type: "tween" }
                             }}
                           >
                             {children}
@@ -408,13 +410,15 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                               textShadow: '0 0 25px currentColor, 0 5px 15px rgba(0,0,0,0.4)'
                             }}
                             animate={{
-                              y: [0, -5, 0],
-                              scale: [1, 1.02, 1]
+                              y: [0, -5],
+                              scale: [1, 1.02]
                             }}
                             transition={{ 
                               duration: 4, 
                               repeat: Infinity,
-                              delay: 0.5
+                              repeatType: "reverse",
+                              delay: 0.5,
+                              type: "tween"
                             }}
                           >
                             {children}
@@ -427,8 +431,8 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                               color: dynamicTextColor || getRandomHighlightColor(),
                               textShadow: '0 0 20px currentColor'
                             }}
-                            animate={{ rotateZ: [-0.5, 0.5, -0.5] }}
-                            transition={{ duration: 6, repeat: Infinity }}
+                            animate={{ rotateZ: [-0.5, 0.5] }}
+                            transition={{ duration: 6, repeat: Infinity, repeatType: "reverse", type: "tween" }}
                           >
                             {children}
                           </motion.h3>
@@ -465,17 +469,18 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                               className="inline-block w-4 h-4 rounded-full mr-4"
                               style={{ backgroundColor: dynamicTextColor || getRandomHighlightColor() }}
                               animate={{
-                                scale: [1, 1.3, 1],
+                                scale: [1, 1.3],
                                 boxShadow: [
                                   '0 0 10px currentColor',
-                                  '0 0 20px currentColor',
-                                  '0 0 10px currentColor'
+                                  '0 0 20px currentColor'
                                 ]
                               }}
                               transition={{ 
                                 duration: 2, 
                                 repeat: Infinity,
-                                delay: Math.random() * 2
+                                repeatType: "reverse",
+                                delay: Math.random() * 2,
+                                type: "tween"
                               }}
                             />
                             {children}
@@ -496,15 +501,16 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                                       filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.6))'
                                     }}
                                     animate={{
-                                      scale: [1, 1.3, 1.1],
-                                      rotateZ: [-2, 2, -1, 0],
-                                      y: [0, -10, 0]
+                                      scale: [1, 1.3],
+                                      rotateZ: [-2, 2],
+                                      y: [0, -10]
                                     }}
                                     transition={{ 
                                       duration: 3, 
                                       repeat: Infinity, 
                                       repeatType: "reverse",
-                                      delay: Math.random() * 2
+                                      delay: Math.random() * 2,
+                                      type: "tween"
                                     }}
                                   >
                                     {part}
@@ -546,12 +552,14 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
           <motion.div 
             className="text-center mt-6 text-white/80 text-lg font-semibold"
             animate={{ 
-              opacity: [0.6, 1, 0.6],
-              scale: [1, 1.05, 1]
+              opacity: [0.6, 1],
+              scale: [1, 1.05]
             }}
             transition={{ 
               duration: 2, 
-              repeat: Infinity 
+              repeat: Infinity,
+              repeatType: "reverse",
+              type: "tween"
             }}
           >
             {currentSlide + 1} / {totalSlides + 1}
