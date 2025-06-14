@@ -321,23 +321,23 @@ const ChooseTheme = () => {
                     >
                       {/* Template Preview */}
                       <div 
-                        className="h-48 p-6 flex flex-col justify-center items-center text-center relative"
+                        className="h-48 p-8 flex flex-col justify-center items-center text-center relative"
                         style={{ backgroundColor: template.preview.backgroundColor }}
                       >
                         <div 
-                          className="text-2xl font-black uppercase tracking-wide mb-2"
+                          className="text-lg font-black uppercase tracking-wide mb-2"
                           style={{ color: template.preview.textColor }}
                         >
                           2025
                         </div>
                         <div 
-                          className="text-4xl font-black uppercase"
+                          className="text-3xl font-black uppercase"
                           style={{ color: template.preview.accentColor }}
                         >
                           {projectName.toUpperCase()}
                         </div>
                         <div 
-                          className="text-lg font-bold uppercase mt-2"
+                          className="text-base font-bold uppercase mt-2"
                           style={{ color: template.preview.textColor }}
                         >
                           SLIDES
