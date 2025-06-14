@@ -27,7 +27,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen pt-20 pb-32 overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+    <section className="relative min-h-screen pt-20 pb-32 overflow-hidden bg-white">
       <AnimatedBackground />
       
       {/* Decorative elements */}
@@ -46,7 +46,7 @@ const Hero = () => {
         >
           <motion.div 
             variants={itemVariants}
-            className="inline-flex items-center px-4 py-2 rounded-full bg-yellow-500/20 text-yellow-300 mb-6 backdrop-blur-sm border border-yellow-500/30"
+            className="inline-flex items-center px-4 py-2 rounded-full bg-yellow-500/20 text-black mb-6 backdrop-blur-sm border border-yellow-500/30"
           >
             <Sparkles className="w-4 h-4 mr-2" />
             <span className="text-sm font-medium font-inter tracking-wide">Turn Data Into Stories</span>
@@ -61,7 +61,7 @@ const Hero = () => {
           
           <motion.p 
             variants={itemVariants}
-            className="font-inter text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed"
+            className="font-inter text-xl md:text-2xl text-black max-w-3xl mx-auto mb-8 leading-relaxed"
           >
             Turn spreadsheets into delightful AI-generated highlight reels for your team or audience.
           </motion.p>
