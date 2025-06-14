@@ -55,7 +55,7 @@ const SignUpForm = () => {
           </div>
           
           <div>
-            <Label htmlFor="email" className="text-white">Work Email</Label>
+            <Label htmlFor="email" className="text-white">Email</Label>
             <Input
               id="email"
               type="email"
@@ -63,7 +63,7 @@ const SignUpForm = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               className="bg-white/10 border-white/20 text-white placeholder-gray-400"
-              placeholder="you@company.com"
+              placeholder="you@example.com"
             />
           </div>
           
@@ -89,10 +89,6 @@ const SignUpForm = () => {
             {isLoading ? 'Creating Account...' : 'Create Account'}
           </Button>
         </form>
-
-        <p className="text-xs text-gray-400 mt-4 text-center">
-          ⚠️ Please use your work email address. Personal email providers are not allowed.
-        </p>
       </CardContent>
     </Card>
   );

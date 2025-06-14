@@ -24,17 +24,6 @@ export const useAuth = () => {
   return context;
 };
 
-// Work email domains validation
-const BLOCKED_DOMAINS = [
-  'gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com',
-  'icloud.com', 'live.com', 'msn.com', 'ymail.com', 'protonmail.com'
-];
-
-const isWorkEmail = (email: string): boolean => {
-  const domain = email.split('@')[1]?.toLowerCase();
-  return domain && !BLOCKED_DOMAINS.includes(domain);
-};
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -49,20 +38,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         
         setSession(session);
         setUser(session?.user ?? null);
-        
-        // Validate work email on sign in
-        if (event === 'SIGNED_IN' && session?.user?.email) {
-          if (!isWorkEmail(session.user.email)) {
-            await supabase.auth.signOut();
-            toast({
-              title: "Invalid Email Domain",
-              description: "Please use your work email address to sign in.",
-              variant: "destructive",
-            });
-            return;
-          }
-        }
-        
         setLoading(false);
       }
     );
@@ -109,17 +84,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signUpWithEmail = async (email: string, password: string, fullName: string) => {
     try {
-      // Validate work email
-      if (!isWorkEmail(email)) {
-        const error = { message: "Please use your work email address to sign up." };
-        toast({
-          title: "Invalid Email Domain",
-          description: error.message,
-          variant: "destructive",
-        });
-        return { error };
-      }
-
       const { data, error } = await supabase.auth.signUp({
         email,
         password,

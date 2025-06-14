@@ -87,7 +87,7 @@ const Auth = () => {
               )}
               
               <div>
-                <Label htmlFor="email" className="text-white">Work Email</Label>
+                <Label htmlFor="email" className="text-white">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -95,7 +95,7 @@ const Auth = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   className="bg-white/10 border-white/20 text-white placeholder-gray-400"
-                  placeholder="you@company.com"
+                  placeholder="you@example.com"
                 />
               </div>
               
@@ -166,9 +166,6 @@ const Auth = () => {
                 <a href="#" className="text-yellow-400 hover:text-yellow-300">Terms of Service</a>{' '}
                 and{' '}
                 <a href="#" className="text-yellow-400 hover:text-yellow-300">Privacy Policy</a>
-              </p>
-              <p className="text-xs text-gray-400 mt-2">
-                ⚠️ Please use your work email address. Personal email providers are not allowed.
               </p>
             </div>
           </CardContent>

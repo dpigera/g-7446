@@ -123,10 +123,6 @@ const AuthSection = () => {
                         </button>
                       </div>
                     </div>
-
-                    <p className="text-xs text-gray-400 mt-6">
-                      ⚠️ Please use your work email address. Personal email providers are not allowed.
-                    </p>
                   </div>
                 )}
               </div>
