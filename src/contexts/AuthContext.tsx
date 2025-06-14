@@ -9,6 +9,8 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
+  signUpWithEmail: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
+  signInWithEmail: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
 }
 
@@ -105,6 +107,87 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const signUpWithEmail = async (email: string, password: string, fullName: string) => {
+    try {
+      // Validate work email
+      if (!isWorkEmail(email)) {
+        const error = { message: "Please use your work email address to sign up." };
+        toast({
+          title: "Invalid Email Domain",
+          description: error.message,
+          variant: "destructive",
+        });
+        return { error };
+      }
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+          },
+          emailRedirectTo: `${window.location.origin}/`,
+        }
+      });
+
+      if (error) {
+        toast({
+          title: "Sign Up Error",
+          description: error.message,
+          variant: "destructive",
+        });
+        return { error };
+      }
+
+      // If signup successful, user should be automatically signed in
+      toast({
+        title: "Account Created!",
+        description: "Welcome to Wrapped.ai!",
+      });
+
+      return { error: null };
+    } catch (error) {
+      console.error('Error signing up:', error);
+      const err = { message: "Failed to create account" };
+      toast({
+        title: "Sign Up Error",
+        description: err.message,
+        variant: "destructive",
+      });
+      return { error: err };
+    }
+  };
+
+  const signInWithEmail = async (email: string, password: string) => {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        toast({
+          title: "Sign In Error",
+          description: error.message,
+          variant: "destructive",
+        });
+        return { error };
+      }
+
+      return { error: null };
+    } catch (error) {
+      console.error('Error signing in:', error);
+      const err = { message: "Failed to sign in" };
+      toast({
+        title: "Sign In Error",
+        description: err.message,
+        variant: "destructive",
+      });
+      return { error: err };
+    }
+  };
+
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -125,6 +208,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     session,
     loading,
     signInWithGoogle,
+    signUpWithEmail,
+    signInWithEmail,
     signOut,
   };
 

@@ -1,14 +1,21 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Auth = () => {
-  const { user, loading, signInWithGoogle } = useAuth();
+  const { user, loading, signInWithGoogle, signInWithEmail, signUpWithEmail } = useAuth();
   const navigate = useNavigate();
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Redirect authenticated users to dashboard
@@ -16,6 +23,26 @@ const Auth = () => {
       navigate('/dashboard');
     }
   }, [user, loading, navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    let error;
+    if (isSignUp) {
+      const result = await signUpWithEmail(email, password, fullName);
+      error = result.error;
+    } else {
+      const result = await signInWithEmail(email, password);
+      error = result.error;
+    }
+
+    if (!error) {
+      navigate('/dashboard');
+    }
+    
+    setIsLoading(false);
+  };
 
   if (loading) {
     return (
@@ -36,13 +63,77 @@ const Auth = () => {
         <Card className="bg-white/10 backdrop-blur-lg border-white/20">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-white mb-2">
-              Welcome to Wrapped<span className="text-yellow-400">.ai</span>
+              {isSignUp ? 'Create Account' : 'Welcome Back'}
             </CardTitle>
             <CardDescription className="text-gray-300">
-              Sign in with your work email to get started
+              {isSignUp ? 'Join thousands of teams using Wrapped.ai' : 'Sign in to your Wrapped.ai account'}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {isSignUp && (
+                <div>
+                  <Label htmlFor="fullName" className="text-white">Full Name</Label>
+                  <Input
+                    id="fullName"
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required
+                    className="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+              )}
+              
+              <div>
+                <Label htmlFor="email" className="text-white">Work Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                  placeholder="you@company.com"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="password" className="text-white">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  className="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                  placeholder={isSignUp ? "Choose a secure password" : "Enter your password"}
+                />
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold py-3 px-4 rounded-lg transition-all hover:shadow-xl hover:shadow-yellow-500/25"
+              >
+                {isLoading 
+                  ? (isSignUp ? 'Creating Account...' : 'Signing In...') 
+                  : (isSignUp ? 'Create Account' : 'Sign In')
+                }
+              </Button>
+            </form>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/20"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-transparent text-gray-400">or</span>
+              </div>
+            </div>
+
             <Button
               onClick={signInWithGoogle}
               className="w-full bg-white hover:bg-gray-100 text-black font-medium py-3 px-4 rounded-lg transition-all flex items-center justify-center space-x-3"
@@ -58,8 +149,20 @@ const Auth = () => {
             </Button>
 
             <div className="text-center">
+              <button
+                onClick={() => setIsSignUp(!isSignUp)}
+                className="text-gray-400 hover:text-yellow-300 text-sm"
+              >
+                {isSignUp 
+                  ? 'Already have an account? Sign in' 
+                  : "Don't have an account? Create one"
+                }
+              </button>
+            </div>
+
+            <div className="text-center">
               <p className="text-xs text-gray-400">
-                By signing in, you agree to our{' '}
+                By {isSignUp ? 'signing up' : 'signing in'}, you agree to our{' '}
                 <a href="#" className="text-yellow-400 hover:text-yellow-300">Terms of Service</a>{' '}
                 and{' '}
                 <a href="#" className="text-yellow-400 hover:text-yellow-300">Privacy Policy</a>
