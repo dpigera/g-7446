@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -9,6 +8,7 @@ import { ArrowLeft, Loader2, Play } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import SlidePreviewModal from '@/components/SlidePreviewModal';
 
 interface UserWithCaptions {
   id: string;
@@ -58,6 +58,8 @@ const ChooseTheme = () => {
   const [projectUsers, setProjectUsers] = useState<UserWithCaptions[]>([]);
   const [showFinalTable, setShowFinalTable] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<UserWithCaptions | null>(null);
 
   // Load project theme and users when page loads
   useEffect(() => {
@@ -180,11 +182,22 @@ const ChooseTheme = () => {
   };
 
   const handlePreviewSlides = (userId: string, userName: string) => {
-    // TODO: Navigate to slide preview page
-    toast({
-      title: "Coming Soon!",
-      description: `Slide preview for ${userName} will be available soon`,
-    });
+    const user = projectUsers.find(u => u.id === userId);
+    if (user && user.wrap_captions && user.wrap_captions.length > 0) {
+      setSelectedUser(user);
+      setModalOpen(true);
+    } else {
+      toast({
+        title: "No Content Available",
+        description: `No wrapped content found for ${userName}`,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedUser(null);
   };
 
   return (
@@ -390,6 +403,17 @@ const ChooseTheme = () => {
           )}
         </motion.div>
       </div>
+
+      {/* Slide Preview Modal */}
+      {selectedUser && (
+        <SlidePreviewModal
+          isOpen={modalOpen}
+          onClose={closeModal}
+          userName={`${selectedUser.first_name} ${selectedUser.last_name}`}
+          captions={selectedUser.wrap_captions || []}
+          theme={selectedTheme}
+        />
+      )}
     </div>
   );
 };
