@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ArrowLeft, Loader2, Play } from 'lucide-react';
+import { ArrowLeft, Loader2, Play, ExternalLink } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -224,6 +225,20 @@ const ChooseTheme = () => {
     }
   };
 
+  const handlePreviewInNewTab = (userId: string, userName: string) => {
+    const user = projectUsers.find(u => u.id === userId);
+    if (user && user.wrap_captions && user.wrap_captions.length > 0) {
+      const url = `/wraps/${projectId}/${userId}`;
+      window.open(url, '_blank');
+    } else {
+      toast({
+        title: "No Content Available",
+        description: `No wrapped content found for ${userName}`,
+        variant: "destructive",
+      });
+    }
+  };
+
   const closeModal = () => {
     setModalOpen(false);
     setSelectedUser(null);
@@ -392,7 +407,7 @@ const ChooseTheme = () => {
                 <CardHeader>
                   <CardTitle className="text-white">🎉 Your Wrapped Slides Are Ready!</CardTitle>
                   <CardDescription className="text-gray-300">
-                    Click "Preview slides" to see each user's personalized wrapped experience
+                    Click "Preview" to see slides in a modal or "Preview in new tab" to open in a separate tab
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -400,7 +415,7 @@ const ChooseTheme = () => {
                     <TableHeader>
                       <TableRow className="border-white/20">
                         <TableHead className="text-gray-300">Name</TableHead>
-                        <TableHead className="text-gray-300 w-48">Preview</TableHead>
+                        <TableHead className="text-gray-300 w-64">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -413,14 +428,24 @@ const ChooseTheme = () => {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <Button
-                              onClick={() => handlePreviewSlides(user.id, `${user.first_name} ${user.last_name}`)}
-                              className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
-                              size="sm"
-                            >
-                              <Play className="w-4 h-4 mr-2" />
-                              Preview slides
-                            </Button>
+                            <div className="flex space-x-2">
+                              <Button
+                                onClick={() => handlePreviewSlides(user.id, `${user.first_name} ${user.last_name}`)}
+                                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
+                                size="sm"
+                              >
+                                <Play className="w-4 h-4 mr-2" />
+                                Preview
+                              </Button>
+                              <Button
+                                onClick={() => handlePreviewInNewTab(user.id, `${user.first_name} ${user.last_name}`)}
+                                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
+                                size="sm"
+                              >
+                                <ExternalLink className="w-4 h-4 mr-2" />
+                                Preview in new tab
+                              </Button>
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}

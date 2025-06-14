@@ -13,6 +13,7 @@ import CreateProject from "./pages/CreateProject";
 import UploadUsers from "./pages/UploadUsers";
 import CreateContent from "./pages/CreateContent";
 import ChooseTheme from "./pages/ChooseTheme";
+import WrapViewer from "./pages/WrapViewer";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -66,6 +67,10 @@ const App = () => (
                   <ChooseTheme />
                 </ProtectedRoute>
               } 
+            />
+            <Route 
+              path="/wraps/:projectId/:userId" 
+              element={<WrapViewer />}
             />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
