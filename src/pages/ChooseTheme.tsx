@@ -87,6 +87,7 @@ const ChooseTheme = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserWithCaptions | null>(null);
+  const [projectName, setProjectName] = useState<string>('');
 
   // Load project theme and users when page loads
   useEffect(() => {
@@ -97,10 +98,10 @@ const ChooseTheme = () => {
       }
 
       try {
-        // Load project theme
+        // Load project theme and name
         const { data: project, error: projectError } = await supabase
           .from('projects')
-          .select('theme')
+          .select('theme, name')
           .eq('id', projectId)
           .single();
 
@@ -108,6 +109,7 @@ const ChooseTheme = () => {
           console.error('Error loading project:', projectError);
         } else if (project) {
           setSelectedTheme(project.theme || 'vibrant');
+          setProjectName(project.name || 'PROJECT');
           // If theme is already saved, show the final table
           if (project.theme) {
             setShowFinalTable(true);
@@ -326,13 +328,13 @@ const ChooseTheme = () => {
                           className="text-2xl font-black uppercase tracking-wide mb-2"
                           style={{ color: template.preview.textColor }}
                         >
-                          YOUR 2024
+                          2025
                         </div>
                         <div 
                           className="text-4xl font-black uppercase"
                           style={{ color: template.preview.accentColor }}
                         >
-                          WRAPPED
+                          {projectName.toUpperCase()}
                         </div>
                         <div 
                           className="text-lg font-bold uppercase mt-2"
