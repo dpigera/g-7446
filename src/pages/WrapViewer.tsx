@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -106,8 +105,18 @@ const WrapViewer = () => {
 
         if (userError) {
           console.error('Error loading user:', userError);
-        } else {
-          setUser(userData);
+        } else if (userData) {
+          // Properly handle the Json type and convert to string array
+          const captions = Array.isArray(userData.wrap_captions) 
+            ? userData.wrap_captions as string[]
+            : null;
+          
+          const userWithCaptions: UserWithCaptions = {
+            ...userData,
+            wrap_captions: captions
+          };
+          
+          setUser(userWithCaptions);
         }
       } catch (err) {
         console.error('Error loading data:', err);
