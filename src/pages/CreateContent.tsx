@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 interface UserWithCaptions {
   id: string;
@@ -23,6 +24,7 @@ const CreateContent = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
   const { user } = useAuth();
+  const { toast } = useToast();
   const [creativePrompt, setCreativePrompt] = useState(`For each user, send the following to GPT-4:
 - The system prompt describing the app's goal (turn data into a personalized Wrapped experience)
 - The admin's creative prompt
@@ -50,8 +52,12 @@ Ask GPT-4 to return 5–6 slide captions (1 sentence each, playful tone, emojis 
 
     setIsGenerating(true);
     setError(null);
+    setGeneratedUsers([]);
     
     try {
+      console.log('Starting content generation for project:', projectId);
+      console.log('Creative prompt:', creativePrompt);
+
       const { data, error } = await supabase.functions.invoke('generate-wrap-content', {
         body: {
           projectId,
@@ -59,18 +65,32 @@ Ask GPT-4 to return 5–6 slide captions (1 sentence each, playful tone, emojis 
         },
       });
 
+      console.log('Edge function response:', data);
+
       if (error) {
+        console.error('Edge function error:', error);
         throw new Error(error.message || 'Failed to generate content');
       }
 
       if (data.error) {
+        console.error('Data error:', data.error);
         throw new Error(data.error);
       }
 
       setGeneratedUsers(data.users || []);
+      toast({
+        title: "Success!",
+        description: `Generated captions for ${data.users?.length || 0} users`,
+      });
     } catch (err) {
       console.error('Error generating content:', err);
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
+      setError(errorMessage);
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
     } finally {
       setIsGenerating(false);
     }
