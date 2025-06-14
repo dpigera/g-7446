@@ -9,6 +9,8 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import CreateProject from "./pages/CreateProject";
+import UploadUsers from "./pages/UploadUsers";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,22 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/create-project" 
+              element={
+                <ProtectedRoute>
+                  <CreateProject />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/create-project/upload-users/:projectId" 
+              element={
+                <ProtectedRoute>
+                  <UploadUsers />
                 </ProtectedRoute>
               } 
             />
