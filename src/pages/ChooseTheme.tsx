@@ -57,45 +57,76 @@ const ChooseTheme = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [projectUsers, setProjectUsers] = useState<UserWithCaptions[]>([]);
   const [showFinalTable, setShowFinalTable] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Load project users when page loads
+  // Load project theme and users when page loads
   useEffect(() => {
-    const loadProjectUsers = async () => {
-      if (!projectId) return;
+    const loadProjectData = async () => {
+      if (!projectId) {
+        setIsLoading(false);
+        return;
+      }
 
       try {
-        const { data, error } = await supabase
+        // Load project theme
+        const { data: project, error: projectError } = await supabase
+          .from('projects')
+          .select('theme')
+          .eq('id', projectId)
+          .single();
+
+        if (projectError) {
+          console.error('Error loading project:', projectError);
+        } else if (project) {
+          setSelectedTheme(project.theme || 'vibrant');
+          // If theme is already saved, show the final table
+          if (project.theme) {
+            setShowFinalTable(true);
+          }
+        }
+
+        // Load project users
+        const { data: users, error: usersError } = await supabase
           .from('project_users')
           .select('id, first_name, last_name, email, wrap_captions')
           .eq('project_id', projectId);
 
-        if (error) {
-          console.error('Error loading project users:', error);
-          return;
+        if (usersError) {
+          console.error('Error loading project users:', usersError);
+        } else {
+          const usersWithCaptions = users?.filter(user => {
+            return user.wrap_captions && 
+                   Array.isArray(user.wrap_captions) && 
+                   user.wrap_captions.length > 0;
+          }).map(user => ({
+            ...user,
+            wrap_captions: user.wrap_captions as string[]
+          })) || [];
+
+          setProjectUsers(usersWithCaptions);
         }
-
-        const usersWithCaptions = data?.filter(user => {
-          return user.wrap_captions && 
-                 Array.isArray(user.wrap_captions) && 
-                 user.wrap_captions.length > 0;
-        }).map(user => ({
-          ...user,
-          wrap_captions: user.wrap_captions as string[]
-        })) || [];
-
-        setProjectUsers(usersWithCaptions);
       } catch (err) {
-        console.error('Error loading project users:', err);
+        console.error('Error loading project data:', err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    loadProjectUsers();
+    loadProjectData();
   }, [projectId]);
 
   if (!projectId) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
         <div className="text-white text-lg">Invalid project ID</div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-white" />
       </div>
     );
   }
@@ -286,23 +317,25 @@ const ChooseTheme = () => {
               </div>
 
               {/* Generate Button */}
-              <div className="pt-4">
-                <Button 
-                  onClick={handleGenerateFinalWraps}
-                  disabled={isUpdating}
-                  className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold py-4 text-lg"
-                  size="lg"
-                >
-                  {isUpdating ? (
-                    <>
-                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      Saving theme...
-                    </>
-                  ) : (
-                    'Generate final wraps!'
-                  )}
-                </Button>
-              </div>
+              {!showFinalTable && (
+                <div className="pt-4">
+                  <Button 
+                    onClick={handleGenerateFinalWraps}
+                    disabled={isUpdating}
+                    className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold py-4 text-lg"
+                    size="lg"
+                  >
+                    {isUpdating ? (
+                      <>
+                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                        Saving theme...
+                      </>
+                    ) : (
+                      'Generate final wraps!'
+                    )}
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
 
