@@ -9,30 +9,30 @@ const WhyItMatters = () => {
       icon: Heart,
       title: "Make your analytics memorable",
       description: "Transform dry numbers into stories people actually remember and care about",
-      color: "from-red-500 to-pink-500"
+      color: "from-yellow-400 to-yellow-500"
     },
     {
       icon: BookOpen,
       title: "Turn data into storytelling",
       description: "AI crafts compelling narratives that highlight what matters most to your audience",
-      color: "from-purple-500 to-indigo-500"
+      color: "from-yellow-400 to-yellow-500"
     },
     {
       icon: BarChart2,
       title: "Track views and engagement",
       description: "See exactly who's reading, what they care about, and how they're responding",
-      color: "from-blue-500 to-cyan-500"
+      color: "from-yellow-400 to-yellow-500"
     },
     {
       icon: Users,
       title: "Perfect for clients, teams, or investors",
       description: "Whether it's internal updates or client reports, deliver insights that impress",
-      color: "from-green-500 to-emerald-500"
+      color: "from-yellow-400 to-yellow-500"
     }
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50" id="why-it-matters">
+    <section className="py-20 bg-white" id="why-it-matters">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -42,7 +42,7 @@ const WhyItMatters = () => {
           className="max-w-6xl mx-auto"
         >
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-black mb-6">
               Why Wrapped Works
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -62,11 +62,11 @@ const WhyItMatters = () => {
               >
                 {/* Icon */}
                 <div className={`w-16 h-16 mb-6 rounded-xl bg-gradient-to-br ${benefit.color} flex items-center justify-center shadow-lg`}>
-                  <benefit.icon className="w-8 h-8 text-white" />
+                  <benefit.icon className="w-8 h-8 text-black" />
                 </div>
                 
                 {/* Content */}
-                <h3 className="text-lg font-bold text-gray-900 mb-3">
+                <h3 className="text-lg font-bold text-black mb-3">
                   {benefit.title}
                 </h3>
                 <p className="text-gray-600 text-sm leading-relaxed">
@@ -82,20 +82,20 @@ const WhyItMatters = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
-            className="mt-16 bg-white rounded-2xl p-8 shadow-xl border border-gray-100"
+            className="mt-16 bg-black rounded-2xl p-8 shadow-xl border border-gray-200"
           >
             <div className="grid md:grid-cols-3 gap-8 text-center">
               <div>
-                <div className="text-3xl font-bold text-purple-600 mb-2">5x</div>
-                <div className="text-sm text-gray-600">Higher engagement than traditional reports</div>
+                <div className="text-3xl font-bold text-yellow-400 mb-2">5x</div>
+                <div className="text-sm text-gray-300">Higher engagement than traditional reports</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-purple-600 mb-2">90%</div>
-                <div className="text-sm text-gray-600">Of users say their data is more memorable</div>
+                <div className="text-3xl font-bold text-yellow-400 mb-2">90%</div>
+                <div className="text-sm text-gray-300">Of users say their data is more memorable</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-purple-600 mb-2">2min</div>
-                <div className="text-sm text-gray-600">Average time to generate a highlight reel</div>
+                <div className="text-3xl font-bold text-yellow-400 mb-2">2min</div>
+                <div className="text-sm text-gray-300">Average time to generate a highlight reel</div>
               </div>
             </div>
           </motion.div>

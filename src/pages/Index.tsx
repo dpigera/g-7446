@@ -38,7 +38,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 overflow-hidden">
+    <div className="min-h-screen bg-white overflow-hidden">
       <div className="fixed w-full z-50">
         <Navbar />
       </div>
@@ -56,7 +56,7 @@ const Index = () => {
         <AuthSection />
       </main>
       
-      <footer className="bg-gray-900 py-8 border-t border-gray-800">
+      <footer className="bg-black py-8 border-t border-gray-200">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <motion.div 
@@ -66,7 +66,7 @@ const Index = () => {
               viewport={{ once: true }}
               className="mb-6 md:mb-0"
             >
-              <h3 className="text-2xl font-bold text-white">Wrapped.ai</h3>
+              <h3 className="text-2xl font-bold text-white">Wrapped<span className="text-yellow-400">.ai</span></h3>
               <p className="text-sm text-gray-400 mt-2">© {new Date().getFullYear()} Wrapped.ai. All rights reserved.</p>
             </motion.div>
             
@@ -77,9 +77,9 @@ const Index = () => {
               viewport={{ once: true }}
               className="flex space-x-8"
             >
-              <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors">Privacy</a>
-              <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors">Terms</a>
-              <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors">Contact</a>
+              <a href="#" className="text-gray-400 hover:text-yellow-400 transition-colors">Privacy</a>
+              <a href="#" className="text-gray-400 hover:text-yellow-400 transition-colors">Terms</a>
+              <a href="#" className="text-gray-400 hover:text-yellow-400 transition-colors">Contact</a>
             </motion.div>
           </div>
         </div>
