@@ -260,9 +260,15 @@ Ask GPT-4 to return 5–6 slide captions (1 sentence each, playful tone, emojis 
               <Card className="bg-white/10 backdrop-blur-lg border-white/20">
                 <CardHeader>
                   <CardTitle className="text-white">Generated Content Results</CardTitle>
-                  <CardDescription className="text-gray-300">
+                  <CardDescription className="text-gray-300 mb-4">
                     Successfully generated captions for {generatedUsers.length} users
                   </CardDescription>
+                  <Button 
+                    className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold"
+                    size="lg"
+                  >
+                    Looks good! Finally, let's pick a theme
+                  </Button>
                 </CardHeader>
                 <CardContent>
                   <Table>
@@ -298,6 +304,14 @@ Ask GPT-4 to return 5–6 slide captions (1 sentence each, playful tone, emojis 
                       ))}
                     </TableBody>
                   </Table>
+                  <div className="mt-6">
+                    <Button 
+                      className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold"
+                      size="lg"
+                    >
+                      Looks good! Finally, let's pick a theme
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
