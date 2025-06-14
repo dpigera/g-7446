@@ -37,9 +37,8 @@ const Dashboard = () => {
     // First check if this project has any users uploaded
     const { data: projectUsers, error: usersError } = await supabase
       .from('project_users')
-      .select('id')
-      .eq('project_id', projectId)
-      .limit(1);
+      .select('id, wrap_captions')
+      .eq('project_id', projectId);
 
     if (usersError) {
       console.error('Error checking project users:', usersError);
@@ -54,6 +53,19 @@ const Dashboard = () => {
       return;
     }
 
+    // Check if any users have generated captions
+    const usersWithCaptions = projectUsers.filter(user => {
+      return user.wrap_captions && 
+             Array.isArray(user.wrap_captions) && 
+             user.wrap_captions.length > 0;
+    });
+
+    // If no users have captions, go to Step 3 (Create Content)
+    if (usersWithCaptions.length === 0) {
+      navigate(`/create-project/create-content/${projectId}`);
+      return;
+    }
+
     // Get the project details including theme
     const { data: project, error: projectError } = await supabase
       .from('projects')
@@ -63,8 +75,8 @@ const Dashboard = () => {
 
     if (projectError) {
       console.error('Error fetching project details:', projectError);
-      // Fallback to upload users step if there's an error
-      navigate(`/create-project/upload-users/${projectId}`);
+      // Fallback to create content step if there's an error
+      navigate(`/create-project/create-content/${projectId}`);
       return;
     }
 
@@ -74,8 +86,8 @@ const Dashboard = () => {
       return;
     }
 
-    // If project has users but no theme, go to Step 3 (Create Content)
-    navigate(`/create-project/create-content/${projectId}`);
+    // If project has users with captions but no theme, go to Step 4 (Choose Theme)
+    navigate(`/create-project/choose-theme/${projectId}`);
   };
 
   return (
