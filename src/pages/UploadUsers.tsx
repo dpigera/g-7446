@@ -1,14 +1,33 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Users } from 'lucide-react';
+import FileUpload from '@/components/FileUpload';
 
 const UploadUsers = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
+  const [uploadedUserCount, setUploadedUserCount] = useState<number | null>(null);
+
+  const handleUploadComplete = (userCount: number) => {
+    setUploadedUserCount(userCount);
+  };
+
+  const handleContinue = () => {
+    // Navigate to next step (to be implemented)
+    navigate('/dashboard');
+  };
+
+  if (!projectId) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
+        <div className="text-white text-lg">Invalid project ID</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
@@ -57,7 +76,7 @@ const UploadUsers = () => {
             </div>
           </div>
 
-          <Card className="bg-white/10 backdrop-blur-lg border-white/20">
+          <Card className="bg-white/10 backdrop-blur-lg border-white/20 mb-6">
             <CardHeader className="text-center">
               <CardTitle className="text-3xl font-bold text-white mb-2">
                 Step 2: Upload Your User List
@@ -66,14 +85,42 @@ const UploadUsers = () => {
                 Project ID: {projectId}
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="text-center">
-                <p className="text-gray-300 text-lg">
-                  This step will be implemented next. You'll be able to upload your user data here.
-                </p>
-              </div>
+            <CardContent>
+              <FileUpload 
+                projectId={projectId} 
+                onUploadComplete={handleUploadComplete}
+              />
             </CardContent>
           </Card>
+
+          {uploadedUserCount !== null && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Card className="bg-green-500/10 border-green-500/30 mb-6">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-center space-x-3 text-green-400">
+                    <Users className="w-6 h-6" />
+                    <span className="text-lg font-medium">
+                      Successfully uploaded {uploadedUserCount} users!
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <div className="text-center">
+                <Button 
+                  onClick={handleContinue}
+                  size="lg"
+                  className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium px-8"
+                >
+                  Continue to Next Step
+                </Button>
+              </div>
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </div>
