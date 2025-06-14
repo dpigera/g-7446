@@ -39,8 +39,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log("Sending wrap email to:", userEmail, "for project:", projectName);
 
-    // Create the wrap URL
-    const wrapUrl = `${Deno.env.get("SUPABASE_URL")?.replace('.supabase.co', '.vercel.app') || 'https://wrapped-ai.vercel.app'}/wraps/${projectId}/${userId}`;
+    // Create the wrap URL with the correct domain
+    const wrapUrl = `https://g-7446.lovable.app/wraps/${projectId}/${userId}`;
 
     // Send email using Resend
     const emailResponse = await resend.emails.send({

@@ -230,7 +230,7 @@ const ChooseTheme = () => {
   const handlePreviewInNewTab = (userId: string, userName: string) => {
     const user = projectUsers.find(u => u.id === userId);
     if (user && user.wrap_captions && user.wrap_captions.length > 0) {
-      const url = `/wraps/${projectId}/${userId}`;
+      const url = `https://g-7446.lovable.app/wraps/${projectId}/${userId}`;
       window.open(url, '_blank');
     } else {
       toast({
