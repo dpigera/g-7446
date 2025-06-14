@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -125,25 +124,23 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
           animate={{ opacity: 1, scale: 1, rotateY: 0 }}
           exit={{ opacity: 0, scale: 0.8, rotateY: 15 }}
           transition={{ duration: 0.5, type: "spring", bounce: 0.3 }}
-          className="relative bg-white/15 backdrop-blur-xl border-2 border-white/30 rounded-2xl p-8 max-w-5xl w-full mx-4 shadow-2xl"
+          className="relative backdrop-blur-xl border-2 border-white/30 rounded-2xl p-8 max-w-5xl w-full mx-4 shadow-2xl"
           style={{
+            backgroundColor: 'transparent',
             boxShadow: '0 0 50px rgba(255, 255, 255, 0.1), inset 0 0 50px rgba(255, 255, 255, 0.05)'
           }}
         >
-          {/* Close Button */}
-          <motion.div
-            whileHover={{ scale: 1.1, rotate: 90 }}
-            whileTap={{ scale: 0.9 }}
-          >
+          {/* Close Button - Fixed and Static */}
+          <div className="absolute top-6 right-6 z-10">
             <Button
               onClick={onClose}
               variant="ghost"
               size="icon"
-              className="absolute top-6 right-6 z-10 text-white hover:bg-white/30 transition-all duration-300"
+              className="w-16 h-16 bg-black/80 hover:bg-black/90 text-white border-2 border-white/30 rounded-full transition-colors duration-300"
             >
-              <X className="w-6 h-6" />
+              <X className="w-8 h-8" />
             </Button>
-          </motion.div>
+          </div>
 
           {/* Progress Bars */}
           <div className="flex space-x-2 mb-8">
@@ -170,44 +167,30 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
 
           {/* Slide Container */}
           <div className="relative flex items-center justify-center">
-            {/* Previous Button - Fixed positioning */}
-            <Button
-              onClick={prevSlide}
-              variant="ghost"
-              size="lg"
-              className="absolute -left-16 top-1/2 -translate-y-1/2 z-20 text-white hover:bg-white/30 transition-colors duration-300 w-12 h-12 rounded-full"
-              disabled={totalSlides <= 1}
-            >
-              <ChevronLeft className="w-8 h-8" />
-            </Button>
+            {/* Previous Button - Fixed positioning with solid background */}
+            <div className="absolute -left-20 top-1/2 -translate-y-1/2 z-20">
+              <Button
+                onClick={prevSlide}
+                variant="ghost"
+                size="lg"
+                className="w-16 h-16 bg-black/80 hover:bg-black/90 text-white border-2 border-white/30 rounded-full transition-colors duration-300"
+                disabled={totalSlides <= 1}
+              >
+                <ChevronLeft className="w-8 h-8" />
+              </Button>
+            </div>
 
             {/* Slide */}
             <motion.div
               key={`${currentSlide}-${colorCycleKey}`}
-              initial={{ 
-                opacity: 0, 
-                scale: 0.8, 
-                rotateX: -20,
-                z: -100
-              }}
-              animate={{ 
-                opacity: 1, 
-                scale: 1, 
-                rotateX: 0,
-                z: 0
-              }}
-              exit={{ 
-                opacity: 0, 
-                scale: 0.8, 
-                rotateX: 20,
-                z: -100
-              }}
-              transition={{ 
-                duration: 0.6, 
-                type: "spring", 
-                bounce: 0.4,
-                staggerChildren: 0.1
-              }}
+              initial={{ opacity: 0, scale: 0.8, rotateX: -20,
+                z: -100 }}
+              animate={{ opacity: 1, scale: 1, rotateX: 0,
+                z: 0 }}
+              exit={{ opacity: 0, scale: 0.8, rotateX: 20,
+                z: -100 }}
+              transition={{ duration: 0.6, type: "spring", bounce: 0.4,
+                staggerChildren: 0.1 }}
               className="w-[700px] h-[420px] rounded-2xl overflow-hidden shadow-2xl relative perspective-1000"
               style={{ 
                 backgroundColor: getCurrentSlideBackground(),
@@ -446,16 +429,18 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
               </div>
             </motion.div>
 
-            {/* Next Button - Fixed positioning */}
-            <Button
-              onClick={nextSlide}
-              variant="ghost"
-              size="lg"
-              className="absolute -right-16 top-1/2 -translate-y-1/2 z-20 text-white hover:bg-white/30 transition-colors duration-300 w-12 h-12 rounded-full"
-              disabled={totalSlides <= 1}
-            >
-              <ChevronRight className="w-8 h-8" />
-            </Button>
+            {/* Next Button - Fixed positioning with solid background */}
+            <div className="absolute -right-20 top-1/2 -translate-y-1/2 z-20">
+              <Button
+                onClick={nextSlide}
+                variant="ghost"
+                size="lg"
+                className="w-16 h-16 bg-black/80 hover:bg-black/90 text-white border-2 border-white/30 rounded-full transition-colors duration-300"
+                disabled={totalSlides <= 1}
+              >
+                <ChevronRight className="w-8 h-8" />
+              </Button>
+            </div>
           </div>
 
           {/* Slide Counter */}
