@@ -46,6 +46,7 @@ export type Database = {
           last_name: string
           project_id: string
           updated_at: string
+          wrap_captions: Json | null
         }
         Insert: {
           created_at?: string
@@ -56,6 +57,7 @@ export type Database = {
           last_name: string
           project_id: string
           updated_at?: string
+          wrap_captions?: Json | null
         }
         Update: {
           created_at?: string
@@ -66,6 +68,7 @@ export type Database = {
           last_name?: string
           project_id?: string
           updated_at?: string
+          wrap_captions?: Json | null
         }
         Relationships: [
           {
