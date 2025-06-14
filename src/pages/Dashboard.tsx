@@ -5,13 +5,39 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { Folder, Calendar } from 'lucide-react';
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
+  const { data: projects, isLoading: projectsLoading } = useQuery({
+    queryKey: ['projects', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return [];
+      
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    },
+    enabled: !!user?.id,
+  });
+
   const handleGetStarted = () => {
     navigate('/create-project');
+  };
+
+  const handleProjectClick = (projectId: string) => {
+    // For now, navigate to upload users step as that's the current flow
+    // Later this can be enhanced to track the last step the user was on
+    navigate(`/create-project/upload-users/${projectId}`);
   };
 
   return (
@@ -48,7 +74,7 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
             <Card className="bg-white/10 backdrop-blur-lg border-white/20">
               <CardHeader>
                 <CardTitle className="text-white">📊 Create Your First Wrapped</CardTitle>
@@ -80,6 +106,53 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           </div>
+
+          {/* Your Projects Section */}
+          <Card className="bg-white/10 backdrop-blur-lg border-white/20">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center space-x-2">
+                <Folder className="w-5 h-5" />
+                <span>Your Projects</span>
+              </CardTitle>
+              <CardDescription className="text-gray-300">
+                Continue working on your existing projects
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {projectsLoading ? (
+                <div className="text-gray-300 text-center py-4">Loading projects...</div>
+              ) : projects && projects.length > 0 ? (
+                <div className="space-y-3">
+                  {projects.map((project) => (
+                    <div
+                      key={project.id}
+                      onClick={() => handleProjectClick(project.id)}
+                      className="p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 cursor-pointer transition-colors"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-white font-medium">{project.name}</h3>
+                          <div className="flex items-center space-x-2 text-gray-400 text-sm mt-1">
+                            <Calendar className="w-4 h-4" />
+                            <span>Created {new Date(project.created_at).toLocaleDateString()}</span>
+                          </div>
+                        </div>
+                        <div className="text-gray-400">
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-gray-400 text-center py-8">
+                  <p>No projects yet. Create your first project to get started!</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </motion.div>
       </div>
     </div>
