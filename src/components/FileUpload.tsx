@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,7 +10,7 @@ import Papa from 'papaparse';
 
 interface FileUploadProps {
   projectId: string;
-  onUploadComplete: (userCount: number) => void;
+  onUploadComplete: (userCount: number, userData: any[]) => void;
 }
 
 interface UserData {
@@ -131,13 +130,27 @@ const FileUpload: React.FC<FileUploadProps> = ({ projectId, onUploadComplete }) 
         throw error;
       }
 
+      // Fetch the uploaded users to display in preview
+      const { data: uploadedUsers, error: fetchError } = await supabase
+        .from('project_users')
+        .select('first_name, last_name, email')
+        .eq('project_id', projectId)
+        .order('created_at', { ascending: false })
+        .limit(processedUsers.length);
+
+      if (fetchError) {
+        console.error('Error fetching uploaded users:', fetchError);
+        // Still show success but without detailed preview
+        onUploadComplete(processedUsers.length, []);
+      } else {
+        onUploadComplete(processedUsers.length, uploadedUsers || []);
+      }
+
       setUploadStatus('success');
       toast({
         title: "Upload successful!",
         description: `Successfully uploaded ${processedUsers.length} users.`,
       });
-
-      onUploadComplete(processedUsers.length);
 
     } catch (error) {
       console.error('Upload error:', error);

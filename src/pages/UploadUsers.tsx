@@ -4,16 +4,25 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, Users } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import FileUpload from '@/components/FileUpload';
+import UserDataPreview from '@/components/UserDataPreview';
+
+interface UserData {
+  first_name: string;
+  last_name: string;
+  email: string;
+}
 
 const UploadUsers = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
   const [uploadedUserCount, setUploadedUserCount] = useState<number | null>(null);
+  const [uploadedUserData, setUploadedUserData] = useState<UserData[]>([]);
 
-  const handleUploadComplete = (userCount: number) => {
+  const handleUploadComplete = (userCount: number, userData: UserData[]) => {
     setUploadedUserCount(userCount);
+    setUploadedUserData(userData);
   };
 
   const handleContinue = () => {
@@ -99,26 +108,11 @@ const UploadUsers = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <Card className="bg-green-500/10 border-green-500/30 mb-6">
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-center space-x-3 text-green-400">
-                    <Users className="w-6 h-6" />
-                    <span className="text-lg font-medium">
-                      Successfully uploaded {uploadedUserCount} users!
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <div className="text-center">
-                <Button 
-                  onClick={handleContinue}
-                  size="lg"
-                  className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium px-8"
-                >
-                  Continue to Next Step
-                </Button>
-              </div>
+              <UserDataPreview 
+                users={uploadedUserData}
+                userCount={uploadedUserCount}
+                onContinue={handleContinue}
+              />
             </motion.div>
           )}
         </motion.div>
