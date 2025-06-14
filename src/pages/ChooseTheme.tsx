@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -386,17 +387,17 @@ const ChooseTheme = () => {
                     >
                       {/* Template Preview */}
                       <div 
-                        className="h-48 p-8 flex flex-col justify-center items-center text-center relative"
+                        className="h-48 p-6 flex flex-col justify-center items-center text-center relative overflow-hidden"
                         style={{ backgroundColor: template.preview.backgroundColor }}
                       >
                         <div 
-                          className="text-lg font-black uppercase tracking-wide mb-2"
+                          className="text-base font-black uppercase tracking-wide mb-1 truncate max-w-full"
                           style={{ color: template.preview.textColor }}
                         >
                           2025
                         </div>
                         <div 
-                          className="text-3xl font-black uppercase"
+                          className="text-xl font-black uppercase truncate max-w-full leading-tight"
                           style={{ color: template.preview.accentColor }}
                         >
                           {projectName.toUpperCase()}
