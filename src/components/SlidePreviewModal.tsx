@@ -170,21 +170,16 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
 
           {/* Slide Container */}
           <div className="relative flex items-center justify-center">
-            {/* Previous Button */}
-            <motion.div
-              whileHover={{ scale: 1.2, x: -5 }}
-              whileTap={{ scale: 0.8 }}
+            {/* Previous Button - Fixed positioning */}
+            <Button
+              onClick={prevSlide}
+              variant="ghost"
+              size="lg"
+              className="absolute -left-16 top-1/2 -translate-y-1/2 z-20 text-white hover:bg-white/30 transition-colors duration-300 w-12 h-12 rounded-full"
+              disabled={totalSlides <= 1}
             >
-              <Button
-                onClick={prevSlide}
-                variant="ghost"
-                size="icon"
-                className="absolute left-0 z-10 text-white hover:bg-white/30 transition-all duration-300"
-                disabled={totalSlides <= 1}
-              >
-                <ChevronLeft className="w-8 h-8" />
-              </Button>
-            </motion.div>
+              <ChevronLeft className="w-8 h-8" />
+            </Button>
 
             {/* Slide */}
             <motion.div
@@ -259,7 +254,7 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
               
               <div className="relative w-full h-full flex flex-col justify-center items-center text-center p-8 z-10">
                 {currentSlide === 0 ? (
-                  // Title slide with enhanced dramatic styling
+                  // Title slide with enhanced dramatic styling - entrance animation only
                   <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -279,17 +274,8 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                     </motion.div>
                     <motion.div
                       initial={{ scale: 0.3, opacity: 0 }}
-                      animate={{ 
-                        scale: 1.2, 
-                        opacity: 1,
-                        rotateZ: [0, 5, -5, 0]
-                      }}
-                      transition={{ 
-                        delay: 0.6, 
-                        duration: 1.2, 
-                        type: "tween",
-                        rotateZ: { duration: 2, repeat: Infinity, type: "tween" }
-                      }}
+                      animate={{ scale: 1.2, opacity: 1 }}
+                      transition={{ delay: 0.6, duration: 1.2, type: "tween" }}
                       className="text-8xl font-black uppercase mb-6"
                       style={{ 
                         color: themeColors.accentColor,
@@ -313,7 +299,7 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                     </motion.div>
                   </motion.div>
                 ) : (
-                  // Content slides with dramatic markdown rendering
+                  // Content slides with entrance animation only
                   <motion.div
                     initial={{ opacity: 0, scale: 0.8, y: 30 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -334,49 +320,27 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                           </motion.div>
                         ),
                         strong: ({ children }) => (
-                          <motion.strong 
+                          <strong 
                             className="font-black text-5xl inline-block mx-2"
                             style={{ 
                               color: dynamicTextColor || getRandomHighlightColor(),
                               textShadow: '0 0 20px rgba(255,255,255,0.8), 0 0 40px currentColor',
                               filter: 'drop-shadow(0 5px 10px rgba(0,0,0,0.5))'
                             }}
-                            animate={{
-                              scale: [1, 1.1],
-                              rotateZ: [-1, 1]
-                            }}
-                            transition={{ 
-                              duration: 2, 
-                              repeat: Infinity, 
-                              repeatType: "reverse",
-                              delay: Math.random() * 2,
-                              type: "tween"
-                            }}
                           >
                             {children}
-                          </motion.strong>
+                          </strong>
                         ),
                         em: ({ children }) => (
-                          <motion.em 
+                          <em 
                             className="italic text-4xl font-bold"
                             style={{ 
                               color: dynamicTextColor || getRandomHighlightColor(),
                               textShadow: '0 0 15px currentColor, 0 5px 10px rgba(0,0,0,0.3)'
                             }}
-                            animate={{
-                              opacity: [0.8, 1],
-                              scale: [1, 1.05]
-                            }}
-                            transition={{ 
-                              duration: 3, 
-                              repeat: Infinity,
-                              repeatType: "reverse",
-                              delay: Math.random(),
-                              type: "tween"
-                            }}
                           >
                             {children}
-                          </motion.em>
+                          </em>
                         ),
                         h1: ({ children }) => (
                           <motion.h1 
@@ -386,56 +350,33 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                               textShadow: '0 0 30px rgba(255,255,255,0.8), 0 0 60px currentColor'
                             }}
                             initial={{ scale: 0.8, rotateX: -20 }}
-                            animate={{ 
-                              scale: 1, 
-                              rotateX: 0,
-                              textShadow: [
-                                '0 0 30px rgba(255,255,255,0.8)',
-                                '0 0 50px rgba(255,255,255,1)'
-                              ]
-                            }}
-                            transition={{ 
-                              duration: 0.8,
-                              textShadow: { duration: 2, repeat: Infinity, repeatType: "reverse", type: "tween" }
-                            }}
+                            animate={{ scale: 1, rotateX: 0 }}
+                            transition={{ duration: 0.8 }}
                           >
                             {children}
                           </motion.h1>
                         ),
                         h2: ({ children }) => (
-                          <motion.h2 
+                          <h2 
                             className="text-5xl font-bold mb-4 uppercase"
                             style={{ 
                               color: dynamicTextColor || getRandomHighlightColor(),
                               textShadow: '0 0 25px currentColor, 0 5px 15px rgba(0,0,0,0.4)'
                             }}
-                            animate={{
-                              y: [0, -5],
-                              scale: [1, 1.02]
-                            }}
-                            transition={{ 
-                              duration: 4, 
-                              repeat: Infinity,
-                              repeatType: "reverse",
-                              delay: 0.5,
-                              type: "tween"
-                            }}
                           >
                             {children}
-                          </motion.h2>
+                          </h2>
                         ),
                         h3: ({ children }) => (
-                          <motion.h3 
+                          <h3 
                             className="text-4xl font-bold mb-3"
                             style={{ 
                               color: dynamicTextColor || getRandomHighlightColor(),
                               textShadow: '0 0 20px currentColor'
                             }}
-                            animate={{ rotateZ: [-0.5, 0.5] }}
-                            transition={{ duration: 6, repeat: Infinity, repeatType: "reverse", type: "tween" }}
                           >
                             {children}
-                          </motion.h3>
+                          </h3>
                         ),
                         ul: ({ children }) => (
                           <motion.ul 
@@ -465,34 +406,20 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ duration: 0.5 }}
                           >
-                            <motion.span 
+                            <span 
                               className="inline-block w-4 h-4 rounded-full mr-4"
                               style={{ backgroundColor: dynamicTextColor || getRandomHighlightColor() }}
-                              animate={{
-                                scale: [1, 1.3],
-                                boxShadow: [
-                                  '0 0 10px currentColor',
-                                  '0 0 20px currentColor'
-                                ]
-                              }}
-                              transition={{ 
-                                duration: 2, 
-                                repeat: Infinity,
-                                repeatType: "reverse",
-                                delay: Math.random() * 2,
-                                type: "tween"
-                              }}
                             />
                             {children}
                           </motion.li>
                         ),
-                        // Enhanced number highlighting
+                        // Enhanced number highlighting - static but with color changes
                         text: ({ children }) => {
                           if (typeof children === 'string') {
                             return children.split(/(\d+(?:,\d+)*(?:\.\d+)?)/g).map((part, index) => {
                               if (/^\d+(?:,\d+)*(?:\.\d+)?$/.test(part)) {
                                 return (
-                                  <motion.span
+                                  <span
                                     key={index}
                                     className="font-black text-6xl mx-2 inline-block"
                                     style={{
@@ -500,21 +427,9 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
                                       textShadow: '0 0 30px currentColor, 0 0 60px rgba(255,255,255,0.5)',
                                       filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.6))'
                                     }}
-                                    animate={{
-                                      scale: [1, 1.3],
-                                      rotateZ: [-2, 2],
-                                      y: [0, -10]
-                                    }}
-                                    transition={{ 
-                                      duration: 3, 
-                                      repeat: Infinity, 
-                                      repeatType: "reverse",
-                                      delay: Math.random() * 2,
-                                      type: "tween"
-                                    }}
                                   >
                                     {part}
-                                  </motion.span>
+                                  </span>
                                 );
                               }
                               return part;
@@ -531,39 +446,22 @@ const SlidePreviewModal = ({ isOpen, onClose, userName, captions, theme }: Slide
               </div>
             </motion.div>
 
-            {/* Next Button */}
-            <motion.div
-              whileHover={{ scale: 1.2, x: 5 }}
-              whileTap={{ scale: 0.8 }}
+            {/* Next Button - Fixed positioning */}
+            <Button
+              onClick={nextSlide}
+              variant="ghost"
+              size="lg"
+              className="absolute -right-16 top-1/2 -translate-y-1/2 z-20 text-white hover:bg-white/30 transition-colors duration-300 w-12 h-12 rounded-full"
+              disabled={totalSlides <= 1}
             >
-              <Button
-                onClick={nextSlide}
-                variant="ghost"
-                size="icon"
-                className="absolute right-0 z-10 text-white hover:bg-white/30 transition-all duration-300"
-                disabled={totalSlides <= 1}
-              >
-                <ChevronRight className="w-8 h-8" />
-              </Button>
-            </motion.div>
+              <ChevronRight className="w-8 h-8" />
+            </Button>
           </div>
 
           {/* Slide Counter */}
-          <motion.div 
-            className="text-center mt-6 text-white/80 text-lg font-semibold"
-            animate={{ 
-              opacity: [0.6, 1],
-              scale: [1, 1.05]
-            }}
-            transition={{ 
-              duration: 2, 
-              repeat: Infinity,
-              repeatType: "reverse",
-              type: "tween"
-            }}
-          >
+          <div className="text-center mt-6 text-white/80 text-lg font-semibold">
             {currentSlide + 1} / {totalSlides + 1}
-          </motion.div>
+          </div>
         </motion.div>
       </motion.div>
     </AnimatePresence>
