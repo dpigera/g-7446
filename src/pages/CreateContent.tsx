@@ -90,6 +90,7 @@ Ask GPT-4 to return 5–6 slide captions (1 sentence each, playful tone, emojis 
 
     setIsGenerating(true);
     setError(null);
+    // Clear existing users during generation to show loading state
     setGeneratedUsers([]);
     
     try {
