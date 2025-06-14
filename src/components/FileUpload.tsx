@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -184,6 +185,16 @@ const FileUpload: React.FC<FileUploadProps> = ({ projectId, onUploadComplete }) 
             onChange={handleFileChange}
             className="cursor-pointer"
           />
+          <div className="text-center">
+            <a 
+              href="https://docs.google.com/spreadsheets/d/1QbVGWW9woSfHoFXamMY9nkQYrl7B3fEVUlPxYIpgtg0/edit?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 underline text-sm"
+            >
+              Click here for a starting template for your CSV file
+            </a>
+          </div>
           {file && (
             <div className="flex items-center space-x-2 text-sm text-gray-600">
               <FileText className="w-4 h-4" />
