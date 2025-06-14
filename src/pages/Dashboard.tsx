@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -35,7 +34,27 @@ const Dashboard = () => {
   };
 
   const handleProjectClick = async (projectId: string) => {
-    // Check if this project has any users uploaded
+    // Get the project details including theme
+    const { data: project, error: projectError } = await supabase
+      .from('projects')
+      .select('theme')
+      .eq('id', projectId)
+      .single();
+
+    if (projectError) {
+      console.error('Error fetching project details:', projectError);
+      // Fallback to upload users step if there's an error
+      navigate(`/create-project/upload-users/${projectId}`);
+      return;
+    }
+
+    // If project has a theme, go directly to Step 4 (Choose Theme)
+    if (project?.theme) {
+      navigate(`/create-project/choose-theme/${projectId}`);
+      return;
+    }
+
+    // If no theme, check if this project has any users uploaded
     const { data: projectUsers, error } = await supabase
       .from('project_users')
       .select('id')
