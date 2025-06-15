@@ -76,7 +76,7 @@ const Hero = () => {
             variants={itemVariants}
             className="font-inter text-xl md:text-2xl text-black max-w-3xl mx-auto mb-8 leading-relaxed"
           >
-            Turn spreadsheets into delightful AI-generated highlight reels for your team or audience.
+            Turn your dry analytics into fun, personalized highlight reels your customers want to read
           </motion.p>
           
           <motion.div 
