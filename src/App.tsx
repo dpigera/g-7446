@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { useGoogleAnalytics } from "@/hooks/useGoogleAnalytics";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -18,6 +19,66 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+// Replace with your actual Google Analytics Measurement ID
+const GA_MEASUREMENT_ID = 'GA_MEASUREMENT_ID';
+
+const AppContent = () => {
+  useGoogleAnalytics(GA_MEASUREMENT_ID);
+  
+  return (
+    <Routes>
+      <Route path="/" element={<Index />} />
+      <Route path="/auth" element={<Auth />} />
+      <Route 
+        path="/dashboard" 
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/create-project" 
+        element={
+          <ProtectedRoute>
+            <CreateProject />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/create-project/upload-users/:projectId" 
+        element={
+          <ProtectedRoute>
+            <UploadUsers />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/create-project/create-content/:projectId" 
+        element={
+          <ProtectedRoute>
+            <CreateContent />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/create-project/choose-theme/:projectId" 
+        element={
+          <ProtectedRoute>
+            <ChooseTheme />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/wraps/:projectId/:userId" 
+        element={<WrapViewer />}
+      />
+      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -25,56 +86,7 @@ const App = () => (
       <Sonner />
       <AuthProvider>
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route 
-              path="/dashboard" 
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/create-project" 
-              element={
-                <ProtectedRoute>
-                  <CreateProject />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/create-project/upload-users/:projectId" 
-              element={
-                <ProtectedRoute>
-                  <UploadUsers />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/create-project/create-content/:projectId" 
-              element={
-                <ProtectedRoute>
-                  <CreateContent />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/create-project/choose-theme/:projectId" 
-              element={
-                <ProtectedRoute>
-                  <ChooseTheme />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/wraps/:projectId/:userId" 
-              element={<WrapViewer />}
-            />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AppContent />
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>
